@@ -1,36 +1,221 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ECHOES — Digital Memory Vault & Personal Time Capsule
 
-## Getting Started
+> **Computer Science & Engineering Minor Project**
 
-First, run the development server:
+ECHOES is a modern, web-based digital memory preservation platform and personal time capsule. It enables users to record life experiences, curate photograph-supported memories in chronological order, and compose reflective letters to their future selves. The platform's distinctive capability is its cryptographic/date-locked time capsule mechanism that securely seals letters and memories until a specified future release date.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 1. Project Overview
+
+- **Title**: ECHOES: Digital Memory Vault and Personal Time Capsule
+- **Type**: CSE Minor Project
+- **Architecture**: Unified Full-Stack Next.js (App Router) with Next.js Route Handlers for REST APIs and MongoDB for document persistence.
+- **Current Milestone**: **Phase 2 Completed** (Memory Journal CRUD, Cloudinary Private Photo Management, Search, Filtering, and Compensating Rollbacks).
+
+---
+
+## 2. Technology Stack
+
+| Layer                   | Technology                         | Purpose                                                                  |
+| :---------------------- | :--------------------------------- | :----------------------------------------------------------------------- |
+| **Framework**           | Next.js 16 (App Router, Turbopack) | Server-rendered pages & backend Route Handlers                           |
+| **Language**            | TypeScript (Strict mode)           | Type safety across client and server                                     |
+| **Database**            | MongoDB Community Server (Local)   | Document database for memories, capsules, and users                      |
+| **ODM**                 | Mongoose 9                         | Schema definitions, validation, and object modeling                      |
+| **Data Validation**     | Zod                                | Runtime schema validation for requests and environment                   |
+| **Authentication**      | `jose` (JWT) & `bcrypt`            | Stateless token authentication, session revocation, and password hashing |
+| **Email Service**       | Nodemailer                         | Transactional email delivery (welcome, reset, confirmation)              |
+| **Media Storage**       | Cloudinary                         | Secure authenticated storage and signed time-limited photo delivery      |
+| **Test Framework**      | Vitest                             | High-speed unit and integration test runner                              |
+| **In-Memory DB**        | MongoDB Memory Server              | Isolated, zero-dependency database for automated tests                   |
+| **Integration Testing** | Supertest                          | HTTP assertion library for API endpoints                                 |
+| **Styling & Motion**    | Tailwind CSS, Framer Motion, GSAP  | Visual interface and interactive animations _(Phase 4)_                  |
+
+---
+
+## 3. Repository Structure
+
+```
+echos/
+├── .env.example              # Environment variables template
+├── .gitignore                # Version control exclusions
+├── .prettierrc               # Code formatting rules
+├── .prettierignore           # Prettier ignore patterns
+├── eslint.config.mjs         # Flat ESLint configuration
+├── next.config.ts            # Next.js runtime configuration
+├── package.json              # Dependency manifests and script definitions
+├── tsconfig.json             # TypeScript compiler settings
+├── vitest.config.mts         # Vitest runner configuration
+├── README.md                 # Project guide & technical overview
+├── docs/                     # Technical documentation & academic reports
+│   ├── architecture.md       # High-level architecture and subsystem design
+│   ├── database-design.md    # Schema models, indexing, and relations
+│   ├── api-documentation.md  # REST API specification & route contracts
+│   ├── decisions.md          # Architectural Decision Records (ADRs 001–016)
+│   └── report/               # CSE Minor Project Academic Documentation
+│       ├── PROJECT_REPORT.md # Formal academic minor project report
+│       ├── PROGRESS.md       # Phase-by-phase implementation progress
+│       └── TEST_REPORT.md    # Verification and automated test reports
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── auth/
+│   │   │   │   ├── register/route.ts        # POST /api/auth/register
+│   │   │   │   ├── login/route.ts           # POST /api/auth/login
+│   │   │   │   ├── logout/route.ts          # POST /api/auth/logout
+│   │   │   │   ├── me/route.ts              # GET /api/auth/me
+│   │   │   │   ├── forgot-password/route.ts # POST /api/auth/forgot-password
+│   │   │   │   ├── reset-password/route.ts  # POST /api/auth/reset-password
+│   │   │   │   └── change-password/route.ts # PATCH /api/auth/change-password
+│   │   │   ├── memories/
+│   │   │   │   ├── route.ts                 # POST, GET /api/memories
+│   │   │   │   ├── [id]/
+│   │   │   │   │   ├── route.ts             # GET, PATCH, DELETE /api/memories/:id
+│   │   │   │   │   └── photos/
+│   │   │   │   │       ├── route.ts         # POST, GET /api/memories/:id/photos
+│   │   │   │   │       └── [photoId]/
+│   │   │   │   │           └── route.ts     # DELETE, PATCH /api/memories/:id/photos/:photoId
+│   │   │   └── health/
+│   │   │       └── route.ts                 # GET /api/health
+│   │   ├── globals.css       # Core styling & design tokens
+│   │   ├── layout.tsx        # Root HTML layout shell
+│   │   └── page.tsx          # Initial entry page
+│   ├── lib/
+│   │   ├── auth/             # Authentication & session utilities
+│   │   │   ├── cookies.ts    # HTTP-only cookie handlers
+│   │   │   ├── guard.ts      # Route handler authentication guard & CSRF
+│   │   │   ├── jwt.ts        # jose JWT signing and verification
+│   │   │   └── password.ts   # bcrypt hashing & crypto tokens
+│   │   ├── db.ts             # Mongoose connection pooling & HMR cache
+│   │   ├── email/            # Nodemailer email subsystem
+│   │   │   ├── mailer.ts     # Transporter configuration & mock support
+│   │   │   ├── service.ts    # Domain email dispatchers
+│   │   │   └── templates.ts  # Reusable HTML email templates
+│   │   ├── env.ts            # Zod-validated environment config
+│   │   ├── media/            # Cloudinary private media integration
+│   │   │   ├── cloudinary.ts # Upload streams, magic bytes, signed URLs
+│   │   │   └── index.ts
+│   │   └── security/
+│   │       └── rate-limit.ts # Sliding window IP rate limiter (native net.isIP)
+│   ├── models/               # Mongoose schema definitions
+│   │   ├── Memory.ts         # Memory entries & timeline schema
+│   │   ├── Photo.ts          # Cloudinary media assets schema
+│   │   ├── TimeCapsule.ts    # Time-locked capsule schema
+│   │   ├── User.ts           # User accounts & auth schema
+│   │   └── index.ts          # Models registry
+│   ├── types/                # Shared TypeScript type definitions
+│   │   └── index.ts
+│   └── validations/          # Zod request validation schemas
+│       ├── auth.ts           # Registration, login, password schemas
+│       ├── memory.ts         # Memory creation, update, move photo schemas
+│       └── index.ts
+└── tests/
+    ├── setup.ts              # Global Vitest configuration & environment setup
+    ├── helpers/
+    │   └── db-handler.ts     # MongoDB Memory Server lifecycle helper
+    ├── integration/          # API route integration tests
+    │   ├── auth.test.ts      # Register, login, logout, me, session revocation
+    │   ├── memory.test.ts    # Memory CRUD, search, filter, pagination
+    │   ├── password.test.ts  # Forgot password, reset password, change password
+    │   └── photo.test.ts     # Cloudinary mock upload, delete, move, rollbacks
+    └── unit/                 # Unit test suites
+        ├── db.test.ts        # Database caching & connection tests
+        ├── email.test.ts     # Templates & Nodemailer transport tests
+        ├── env.test.ts       # Environment variable validation tests
+        ├── health.test.ts    # Health check route handler unit tests
+        ├── media.test.ts     # Buffer validation & magic bytes tests
+        ├── models.test.ts    # Mongoose models validation & lifecycle hooks
+        └── rate-limit.test.ts# Rate limit sliding-window & IP tests
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 4. Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Prerequisites
 
-## Learn More
+- **Node.js**: `v20.x` or later (tested on `v26.11.1`)
+- **npm**: `v10.x` or later
+- **MongoDB Community Server**: Running locally at `mongodb://127.0.0.1:27017/echoes`
 
-To learn more about Next.js, take a look at the following resources:
+### Setup Instructions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the repository and enter directory**:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   cd /home/abhi/Projects/echos
+   ```
 
-## Deploy on Vercel
+2. **Configure Environment Variables**:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   cp .env.example .env.local
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   _Edit `.env.local` to customize variables if required._
+
+3. **Install Dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+4. **Verify Build & Lint**:
+
+   ```bash
+   npm run lint
+   npm run build
+   ```
+
+5. **Run Automated Test Suite**:
+
+   ```bash
+   npm run test
+   ```
+
+6. **Start Local Development Server**:
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 5. Implemented API Endpoints (Phase 1)
+
+| Method  | Endpoint                    | Access                 | Description                                                              |
+| :------ | :-------------------------- | :--------------------- | :----------------------------------------------------------------------- |
+| `GET`   | `/api/health`               | Public                 | System status and service health check                                   |
+| `POST`  | `/api/auth/register`        | Public                 | Register user, hash password, set HTTP-only cookie, send welcome email   |
+| `POST`  | `/api/auth/login`           | Public                 | Authenticate credentials, return JWT & set HTTP-only cookie              |
+| `POST`  | `/api/auth/logout`          | Authenticated / Public | Invalidate token (`tokenVersion++`) and clear HTTP-only cookie           |
+| `GET`   | `/api/auth/me`              | Authenticated          | Retrieve current authenticated user profile                              |
+| `POST`  | `/api/auth/forgot-password` | Public                 | Generate crypto token hash and dispatch password reset email             |
+| `POST`  | `/api/auth/reset-password`  | Public                 | Reset password using valid unexpired token and invalidate prior sessions |
+| `PATCH` | `/api/auth/change-password` | Authenticated          | Verify current password, save new hash, invalidate other active sessions |
+
+---
+
+## 6. Development Scripts
+
+- `npm run dev`: Launch Next.js local development server with Turbopack.
+- `npm run build`: Compile and type-check the Next.js production build.
+- `npm run start`: Launch the compiled Next.js production server.
+- `npm run lint`: Execute ESLint checks across TypeScript, Next.js, and Vitest files.
+- `npm run format`: Automatically format source code with Prettier.
+- `npm run format:check`: Validate source code formatting with Prettier without modification.
+- `npm run test`: Run the Vitest automated test suite once.
+- `npm run test:watch`: Run the Vitest automated test suite in interactive watch mode.
+- `npm run test:coverage`: Run Vitest and output code coverage reports via V8.
+
+---
+
+## 7. Academic Documentation References
+
+- [Architecture Design](docs/architecture.md)
+- [Database Schema Design](docs/database-design.md)
+- [REST API Documentation](docs/api-documentation.md)
+- [Architectural Decision Records (ADRs)](docs/decisions.md)
+- [Academic Project Report](docs/report/PROJECT_REPORT.md)
+- [Phase Progress Tracker](docs/report/PROGRESS.md)
+- [Test Report](docs/report/TEST_REPORT.md)

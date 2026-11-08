@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 1200" width="320" height="1200" fill="none" aria-label="Chronology Serpentine Connecting Spine">
+  <defs>
+    <!-- Multi-stop Gradient along the timeline river -->
+    <linearGradient id="timelineRiverGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F7D84B" />
+      <stop offset="20%" stop-color="#FF684D" />
+      <stop offset="45%" stop-color="#FFB93F" />
+      <stop offset="70%" stop-color="#39BFAE" />
+      <stop offset="88%" stop-color="#4F66E8" />
+      <stop offset="100%" stop-color="#191A2B" />
+    </linearGradient>
+
+    <!-- Node Glow Filter -->
+    <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.5" result="glow" />
+      <feComposite in="SourceGraphic" in2="glow" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- =========================================================================
+       1. AMBIENT GLOW BACKBONE (Subtle Background Trace)
+       ========================================================================= -->
+  <path
+    d="M 160 0 C 240 150, 80 300, 160 450 C 240 600, 80 750, 160 900 C 240 1050, 120 1150, 160 1200"
+    stroke="url(#timelineRiverGrad)"
+    stroke-width="6"
+    stroke-linecap="round"
+    opacity="0.18"
+    filter="url(#nodeGlow)"
+  />
+
+  <!-- =========================================================================
+       2. PRIMARY ARCHIVAL SPHERICAL SPINE
+       ========================================================================= -->
+  <path
+    id="spine-main-path"
+    d="M 160 0 C 240 150, 80 300, 160 450 C 240 600, 80 750, 160 900 C 240 1050, 120 1150, 160 1200"
+    stroke="url(#timelineRiverGrad)"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- Secondary Parallel Dashed Archival Calibration Track -->
+  <path
+    d="M 172 0 C 252 150, 92 300, 172 450 C 252 600, 92 750, 172 900 C 252 1050, 132 1150, 172 1200"
+    stroke="#D49A3D"
+    stroke-width="1"
+    stroke-dasharray="3 6"
+    opacity="0.4"
+    fill="none"
+  />
+
+  <!-- =========================================================================
+       3. ANCHOR NODES & CHRONOLOGICAL STOPS
+       ========================================================================= -->
+  <!-- Node 01: Genesis / Today (y = 80) -->
+  <g id="node-genesis" transform="translate(182, 80)">
+    <circle cx="0" cy="0" r="14" fill="#191A2B" stroke="#FF684D" stroke-width="2" />
+    <circle cx="0" cy="0" r="5" fill="#FF684D" filter="url(#nodeGlow)" />
+    <line x1="-30" y1="0" x2="-14" y2="0" stroke="#FF684D" stroke-width="1.5" stroke-dasharray="2 2" />
+    <circle cx="-32" cy="0" r="2.5" fill="#FFB93F" />
+  </g>
+
+  <!-- Node 02: First Memory Milestone (y = 330) -->
+  <g id="node-memory-01" transform="translate(112, 330)">
+    <circle cx="0" cy="0" r="12" fill="#191A2B" stroke="#FFB93F" stroke-width="2" />
+    <circle cx="0" cy="0" r="4" fill="#FFB93F" />
+    <line x1="12" y1="0" x2="30" y2="0" stroke="#FFB93F" stroke-width="1.5" />
+    <circle cx="32" cy="0" r="2" fill="#FF684D" />
+  </g>
+
+  <!-- Node 03: Time Capsule Sealed (y = 600) -->
+  <g id="node-capsule-sealed" transform="translate(208, 600)">
+    <circle cx="0" cy="0" r="16" fill="#191A2B" stroke="#39BFAE" stroke-width="2.2" />
+    <circle cx="0" cy="0" r="6" fill="#39BFAE" filter="url(#nodeGlow)" />
+    <!-- Miniature Lock Icon Geometry -->
+    <rect x="-3" y="-2" width="6" height="5" rx="1" fill="#F7F3EC" />
+    <path d="M -2 -2 A 2 2 0 0 1 2 -2" stroke="#F7F3EC" stroke-width="1" fill="none" />
+  </g>
+
+  <!-- Node 04: Five-Year Horizon (y = 880) -->
+  <g id="node-horizon" transform="translate(130, 880)">
+    <circle cx="0" cy="0" r="13" fill="#191A2B" stroke="#4F66E8" stroke-width="2" />
+    <circle cx="0" cy="0" r="4.5" fill="#4F66E8" />
+    <line x1="-28" y1="0" x2="-13" y2="0" stroke="#4F66E8" stroke-width="1.5" />
+    <circle cx="-30" cy="0" r="2" fill="#B7DB50" />
+  </g>
+
+  <!-- Node 05: Unsealed Destination / Maturity (y = 1130) -->
+  <g id="node-maturity" transform="translate(172, 1130)">
+    <circle cx="0" cy="0" r="16" fill="#191A2B" stroke="#B7DB50" stroke-width="2.5" />
+    <circle cx="0" cy="0" r="6" fill="#B7DB50" filter="url(#nodeGlow)" />
+    <!-- Radiating star flares around unsealed milestone -->
+    <line x1="0" y1="-22" x2="0" y2="-18" stroke="#B7DB50" stroke-width="1.5" />
+    <line x1="0" y1="18" x2="0" y2="22" stroke="#B7DB50" stroke-width="1.5" />
+    <line x1="-22" y1="0" x2="-18" y2="0" stroke="#B7DB50" stroke-width="1.5" />
+    <line x1="18" y1="0" x2="22" y2="0" stroke="#B7DB50" stroke-width="1.5" />
+  </g>
+
+  <!-- Intermediate Minute Calibration Ticks along spine (every ~50px) -->
+  <g stroke="#D49A3D" stroke-width="1" opacity="0.6">
+    <line x1="150" y1="170" x2="162" y2="170" />
+    <line x1="120" y1="230" x2="132" y2="230" />
+    <line x1="110" y1="400" x2="122" y2="400" />
+    <line x1="140" y1="480" x2="152" y2="480" />
+    <line x1="190" y1="540" x2="202" y2="540" />
+    <line x1="200" y1="670" x2="212" y2="670" />
+    <line x1="160" y1="740" x2="172" y2="740" />
+    <line x1="120" y1="810" x2="132" y2="810" />
+    <line x1="140" y1="960" x2="152" y2="960" />
+    <line x1="170" y1="1020" x2="182" y2="1020" />
+    <line x1="180" y1="1080" x2="192" y2="1080" />
+  </g>
+</svg>
+

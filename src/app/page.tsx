@@ -1,69 +1,70 @@
-import Image from "next/image";
+import React from 'react';
+import { Metadata } from 'next';
+import { EditorialHeader } from '@/components/layout/EditorialHeader';
+import { HeroSection } from '@/components/landing/HeroSection';
+import { ManifestoSection } from '@/components/landing/ManifestoSection';
+import { ContactSheetSection } from '@/components/landing/ContactSheetSection';
+import { MemoryArchiveSection } from '@/components/landing/MemoryArchiveSection';
+import { SealingChamberSection } from '@/components/landing/SealingChamberSection';
+import { ChronologySection } from '@/components/landing/ChronologySection';
+import { ProductShowcaseSection } from '@/components/landing/ProductShowcaseSection';
+import { EpilogueSection } from '@/components/landing/EpilogueSection';
+import { SmoothScrollProvider } from '@/components/landing/SmoothScrollProvider';
+
+export const metadata: Metadata = {
+  title: 'Echoes — Digital Memory Vault & Personal Time Capsule',
+  description:
+    'An experimental editorial archive for the preservation of human reflection, 35mm photographic memories, and cryptographically sealed time capsules.',
+  openGraph: {
+    title: 'Echoes — Digital Memory Vault & Personal Time Capsule',
+    description:
+      'The sanctuary for things time must not steal. Inscribe your memories, attach photographic traces, and seal letters to your future self.',
+    type: 'website',
+    images: [
+      {
+        url: '/images/hero/hero_celestial_sanctuary.webp',
+        width: 1672,
+        height: 941,
+        alt: 'Echoes Archival Sanctuary',
+      },
+    ],
+  },
+};
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <SmoothScrollProvider>
+      <div className="min-h-screen flex flex-col bg-[#F7F3EC] dark:bg-[#12131D] text-[#191A2B] dark:text-[#F7F3EC] selection:bg-[#FF684D] selection:text-white transition-colors duration-300">
+        {/* Editorial Navigation Header with Theme Toggle & Auth State */}
+        <EditorialHeader />
+
+        <main className="flex-1" data-vault-index="VAULT INDEX № 01 · CHRONICLE OF TIME">
+          {/* Archival Index: VAULT INDEX № 01 · CHRONICLE OF TIME */}
+          {/* Moment 1: Cinematic Hero — The Vault of Elapsed Moments */}
+          <HeroSection />
+
+          {/* Moment 2: The Architecture of Memory (Editorial Manifesto) */}
+          <ManifestoSection />
+
+          {/* Moment 3: Traces of Light & Film (35mm Contact Sheet) */}
+          <ContactSheetSection />
+
+          {/* Moment 4: The Living Memory Archive */}
+          <MemoryArchiveSection />
+
+          {/* Moment 5: The Time Capsule Sealing Chamber */}
+          <SealingChamberSection />
+
+          {/* Moment 6: Infinite Chronology (Serpentine Timeline Spine) */}
+          <ChronologySection />
+
+          {/* Moment 7: The Real Product (Authentic Interface Showcase) */}
+          <ProductShowcaseSection />
+        </main>
+
+        {/* Moment 8: Epilogue — Begin Your Archive & Editorial Footer */}
+        <EpilogueSection />
+      </div>
+    </SmoothScrollProvider>
   );
 }

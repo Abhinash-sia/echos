@@ -1,26 +1,473 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Oswald:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import 'tailwindcss';
+@import '../styles/tokens.css';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Playful Surrealism Core Palette */
+  --color-coral: var(--color-electric-coral);
+  --color-electric-coral: var(--color-electric-coral);
+  --color-tangerine: var(--color-tangerine);
+  --color-pink: var(--color-dream-pink);
+  --color-dream-pink: var(--color-dream-pink);
+  --color-cobalt: var(--color-cobalt);
+  --color-lime: var(--color-acid-lime);
+  --color-acid-lime: var(--color-acid-lime);
+  --color-teal: var(--color-vibrant-teal);
+  --color-vibrant-teal: var(--color-vibrant-teal);
+  --color-midnight: var(--color-midnight);
+  --color-warm-cream: var(--color-warm-cream);
+  --color-cream: var(--color-warm-cream);
+  --color-yellow: var(--color-solar-yellow);
+  --color-solar-yellow: var(--color-solar-yellow);
+
+  /* Hybrid Semantic Canvas & Surfaces */
+  --color-canvas: var(--bg-canvas);
+  --color-canvas-warm: var(--bg-canvas-warm);
+  --color-surface: var(--bg-surface);
+  --color-surface-elevated: var(--bg-surface-elevated);
+  --color-surface-contrast: var(--bg-surface-contrast);
+
+  /* Semantic Typography Colors */
+  --color-text-main: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-text-inverted: var(--text-inverted);
+
+  /* Semantic Borders */
+  --color-border-hairline: var(--border-hairline);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-medium: var(--border-medium);
+  --color-border-strong: var(--border-strong);
+
+  /* Backward Compatibility Mappings for existing UI components */
+  --color-paper: var(--bg-canvas);
+  --color-paper-warm: var(--bg-canvas-warm);
+  --color-paper-elevated: var(--bg-surface-elevated);
+  --color-olive-charcoal: var(--color-midnight);
+  --color-ink: var(--text-primary);
+  --color-ink-secondary: var(--text-secondary);
+  --color-ink-muted: var(--text-muted);
+  --color-ink-subtle: var(--text-subtle);
+  --color-terracotta: var(--color-electric-coral);
+  --color-terracotta-soft: var(--accent-primary-soft);
+  --color-ochre: var(--color-tangerine);
+  --color-ochre-soft: var(--accent-tangerine-soft);
+  --color-brass: var(--color-solar-yellow);
+  --color-brass-soft: var(--accent-yellow-soft);
+  --color-olive: var(--color-vibrant-teal);
+  --color-olive-soft: var(--accent-teal-soft);
+
+  /* Typography Stacks */
+  --font-serif: var(--font-serif);
+  --font-condensed: var(--font-condensed);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  /* Expressive Surrealist Shadows & Glows */
+  --shadow-paper: var(--shadow-paper);
+  --shadow-elevated: var(--shadow-elevated);
+  --shadow-sticker: var(--shadow-sticker);
+  --shadow-sticker-coral: var(--shadow-sticker-coral);
+  --shadow-sticker-cobalt: var(--shadow-sticker-cobalt);
+  --shadow-glow-coral: var(--shadow-glow-coral);
+  --shadow-glow-cobalt: var(--shadow-glow-cobalt);
+  --shadow-sun: var(--shadow-sun);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* =========================================================================
+   BASE STYLES & ACCESSIBLE TYPOGRAPHY
+   ========================================================================= */
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition:
+    background-color var(--duration-base) var(--ease-editorial),
+    color var(--duration-base) var(--ease-editorial);
+  overflow-x: hidden;
+}
+
+/* High-Contrast Expressive Selection */
+::selection {
+  background-color: var(--color-electric-coral);
+  color: #ffffff;
+}
+
+/* Film Grain & Halftone Texture Overlay */
+.film-grain {
+  position: relative;
+}
+
+.film-grain::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 10;
+}
+
+.dark .film-grain::before,
+[data-theme='dark'] .film-grain::before {
+  opacity: 0.055;
+}
+
+/* Playful Surrealism Graphic Sticker Shadows */
+.sticker-shadow {
+  box-shadow: 4px 4px 0px var(--color-midnight);
+}
+
+.dark .sticker-shadow {
+  box-shadow: 4px 4px 0px var(--color-warm-cream);
+}
+
+.sticker-shadow-coral {
+  box-shadow: 4px 4px 0px var(--color-electric-coral);
+}
+
+.sticker-shadow-cobalt {
+  box-shadow: 4px 4px 0px var(--color-cobalt);
+}
+
+.sticker-shadow-lime {
+  box-shadow: 4px 4px 0px var(--color-acid-lime);
+}
+
+/* =========================================================================
+   SELECTIVE NEUMORPHISM (Restrained, Modern Treatment for Controls & Widgets)
+   ========================================================================= */
+.neu-raised {
+  background-color: var(--bg-canvas);
+  box-shadow:
+    5px 5px 12px rgba(25, 26, 43, 0.07),
+    -5px -5px 12px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(25, 26, 43, 0.06);
+}
+
+.dark .neu-raised {
+  background-color: #1e2035;
+  box-shadow:
+    5px 5px 14px rgba(0, 0, 0, 0.45),
+    -4px -4px 10px rgba(45, 48, 75, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.neu-inset {
+  background-color: var(--bg-canvas-warm);
+  box-shadow:
+    inset 2px 2px 6px rgba(25, 26, 43, 0.08),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(25, 26, 43, 0.06);
+}
+
+.dark .neu-inset {
+  background-color: #151624;
+  box-shadow:
+    inset 2px 2px 6px rgba(0, 0, 0, 0.55),
+    inset -2px -2px 5px rgba(45, 48, 75, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.neu-control {
+  background-color: var(--bg-canvas);
+  box-shadow:
+    3px 3px 8px rgba(25, 26, 43, 0.06),
+    -3px -3px 8px rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(25, 26, 43, 0.06);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neu-control:hover {
+  box-shadow:
+    4px 4px 12px rgba(25, 26, 43, 0.1),
+    -4px -4px 12px rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+}
+
+.neu-control:active,
+.neu-control-active {
+  box-shadow:
+    inset 2px 2px 5px rgba(25, 26, 43, 0.14),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.8);
+  transform: translateY(1px);
+}
+
+.dark .neu-control {
+  background-color: #25283f;
+  box-shadow:
+    3px 3px 8px rgba(0, 0, 0, 0.4),
+    -2px -2px 6px rgba(45, 48, 75, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark .neu-control:hover {
+  box-shadow:
+    4px 4px 12px rgba(0, 0, 0, 0.5),
+    -3px -3px 8px rgba(45, 48, 75, 0.35);
+}
+
+.dark .neu-control:active,
+.dark .neu-control-active {
+  box-shadow:
+    inset 2px 2px 5px rgba(0, 0, 0, 0.6),
+    inset -1px -1px 3px rgba(45, 48, 75, 0.2);
+}
+
+/* Vertical Typography Utility */
+.writing-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+/* =========================================================================
+   STAGE 7 MOTION DESIGN SYSTEM — COHESIVE KEYFRAMES & UTILITIES
+   ========================================================================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Surreal Floating Animations */
+@keyframes floatGentle {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.5deg);
+  }
+}
+
+@keyframes floatReverse {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(-1.5deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 15px rgba(255, 104, 77, 0.4));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 35px rgba(255, 104, 77, 0.8));
+  }
+}
+
+@keyframes marqueeScroll {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn var(--duration-base) var(--ease-editorial) forwards;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp var(--duration-base) var(--ease-editorial) forwards;
+}
+
+.animate-fadeInScale {
+  animation: fadeInScale var(--duration-base) var(--ease-surreal) forwards;
+}
+
+.animate-slide-down {
+  animation: slideDown var(--duration-base) var(--ease-editorial) forwards;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 20s linear infinite;
+}
+
+.animate-float {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: floatReverse 7s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 24s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* =========================================================================
+   SCROLL-TRIGGERED REVEAL & STAGGER UTILITIES
+   ========================================================================= */
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.48s var(--ease-editorial),
+    transform 0.48s var(--ease-editorial);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-reveal-scale {
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity 0.42s var(--ease-editorial),
+    transform 0.42s var(--ease-surreal);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal-scale.is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.stagger-1 {
+  transition-delay: 60ms;
+}
+.stagger-2 {
+  transition-delay: 120ms;
+}
+.stagger-3 {
+  transition-delay: 180ms;
+}
+.stagger-4 {
+  transition-delay: 240ms;
+}
+.stagger-5 {
+  transition-delay: 300ms;
+}
+.stagger-6 {
+  transition-delay: 360ms;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-electric-coral);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .scroll-reveal,
+  .scroll-reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .animate-float,
+  .animate-float-slow,
+  .animate-pulse-glow,
+  .animate-marquee,
+  .animate-spin-slow {
+    animation: none !important;
+  }
 }

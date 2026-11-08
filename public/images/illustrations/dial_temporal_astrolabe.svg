@@ -1,0 +1,288 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" fill="none" aria-label="Temporal Astrolabe Dial">
+  <defs>
+    <!-- Brass Metallic Radial Gradient -->
+    <radialGradient id="brassOuterBevel" cx="45%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FFD875" />
+      <stop offset="45%" stop-color="#D49A3D" />
+      <stop offset="85%" stop-color="#8C5E1E" />
+      <stop offset="100%" stop-color="#4A300A" />
+    </radialGradient>
+
+    <!-- Center Sun Core Gradient -->
+    <radialGradient id="sunCoreGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#FFF2A8" />
+      <stop offset="35%" stop-color="#F7D84B" />
+      <stop offset="75%" stop-color="#FF684D" />
+      <stop offset="100%" stop-color="#B3321B" />
+    </radialGradient>
+
+    <!-- Inner Dial Deep Vault Gradient -->
+    <radialGradient id="innerVaultDepth" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#191A2B" stop-opacity="0.95" />
+      <stop offset="70%" stop-color="#12131F" stop-opacity="0.98" />
+      <stop offset="100%" stop-color="#0B0C14" />
+    </radialGradient>
+
+    <!-- Subtle Glow Filter for Active Accents -->
+    <filter id="dialGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- =========================================================================
+       GROUP 1: STATIC OUTER BRASS CASING & CALIBRATION TRACKS
+       ========================================================================= -->
+  <g id="astrolabe-base-casing">
+    <!-- Heavy Outer Beveled Rim -->
+    <circle cx="300" cy="300" r="286" stroke="url(#brassOuterBevel)" stroke-width="8" opacity="0.9" />
+    <circle cx="300" cy="300" r="278" stroke="#191A2B" stroke-width="2" />
+    <circle cx="300" cy="300" r="275" stroke="#FFB93F" stroke-width="1.5" stroke-dasharray="2 4" opacity="0.6" />
+    <circle cx="300" cy="300" r="268" stroke="#D49A3D" stroke-width="1" />
+
+    <!-- Dial Background Foundation -->
+    <circle cx="300" cy="300" r="267" fill="url(#innerVaultDepth)" />
+  </g>
+
+  <!-- =========================================================================
+       GROUP 2: INDEPENDENTLY ROTATABLE OUTER GEAR & DEGREE RING
+       ========================================================================= -->
+  <g id="astrolabe-outer-gear" class="origin-center">
+    <!-- 72 Micro-Degree Radial Ticks (Every 5 degrees) -->
+    <!-- Quadrant 1 -->
+    <g stroke="#D49A3D" stroke-width="1.2" opacity="0.75">
+      <line x1="300" y1="33" x2="300" y2="45" />
+      <line x1="323" y1="34" x2="322" y2="46" />
+      <line x1="347" y1="37" x2="344" y2="49" />
+      <line x1="370" y1="42" x2="366" y2="53" />
+      <line x1="392" y1="49" x2="387" y2="60" />
+      <line x1="414" y1="58" x2="407" y2="69" />
+      <line x1="434" y1="69" x2="426" y2="79" />
+      <line x1="453" y1="81" x2="444" y2="90" />
+      <line x1="471" y1="95" x2="460" y2="104" />
+      <line x1="487" y1="110" x2="475" y2="118" />
+      <line x1="501" y1="127" x2="488" y2="134" />
+      <line x1="513" y1="146" x2="499" y2="151" />
+      <line x1="523" y1="165" x2="508" y2="170" />
+      <line x1="531" y1="185" x2="515" y2="189" />
+      <line x1="537" y1="206" x2="520" y2="209" />
+      <line x1="540" y1="228" x2="523" y2="230" />
+      <line x1="542" y1="250" x2="524" y2="251" />
+      <line x1="542" y1="272" x2="524" y2="272" />
+      <line x1="540" y1="294" x2="522" y2="293" />
+    </g>
+    <!-- Quadrant 2 -->
+    <g stroke="#D49A3D" stroke-width="1.2" opacity="0.75" transform="rotate(90 300 300)">
+      <line x1="300" y1="33" x2="300" y2="45" />
+      <line x1="323" y1="34" x2="322" y2="46" />
+      <line x1="347" y1="37" x2="344" y2="49" />
+      <line x1="370" y1="42" x2="366" y2="53" />
+      <line x1="392" y1="49" x2="387" y2="60" />
+      <line x1="414" y1="58" x2="407" y2="69" />
+      <line x1="434" y1="69" x2="426" y2="79" />
+      <line x1="453" y1="81" x2="444" y2="90" />
+      <line x1="471" y1="95" x2="460" y2="104" />
+      <line x1="487" y1="110" x2="475" y2="118" />
+      <line x1="501" y1="127" x2="488" y2="134" />
+      <line x1="513" y1="146" x2="499" y2="151" />
+      <line x1="523" y1="165" x2="508" y2="170" />
+      <line x1="531" y1="185" x2="515" y2="189" />
+      <line x1="537" y1="206" x2="520" y2="209" />
+      <line x1="540" y1="228" x2="523" y2="230" />
+      <line x1="542" y1="250" x2="524" y2="251" />
+      <line x1="542" y1="272" x2="524" y2="272" />
+      <line x1="540" y1="294" x2="522" y2="293" />
+    </g>
+    <!-- Quadrants 3 and 4 -->
+    <g stroke="#D49A3D" stroke-width="1.2" opacity="0.75" transform="rotate(180 300 300)">
+      <line x1="300" y1="33" x2="300" y2="45" />
+      <line x1="323" y1="34" x2="322" y2="46" />
+      <line x1="347" y1="37" x2="344" y2="49" />
+      <line x1="370" y1="42" x2="366" y2="53" />
+      <line x1="392" y1="49" x2="387" y2="60" />
+      <line x1="414" y1="58" x2="407" y2="69" />
+      <line x1="434" y1="69" x2="426" y2="79" />
+      <line x1="453" y1="81" x2="444" y2="90" />
+      <line x1="471" y1="95" x2="460" y2="104" />
+      <line x1="487" y1="110" x2="475" y2="118" />
+      <line x1="501" y1="127" x2="488" y2="134" />
+      <line x1="513" y1="146" x2="499" y2="151" />
+      <line x1="523" y1="165" x2="508" y2="170" />
+      <line x1="531" y1="185" x2="515" y2="189" />
+      <line x1="537" y1="206" x2="520" y2="209" />
+      <line x1="540" y1="228" x2="523" y2="230" />
+      <line x1="542" y1="250" x2="524" y2="251" />
+      <line x1="542" y1="272" x2="524" y2="272" />
+      <line x1="540" y1="294" x2="522" y2="293" />
+    </g>
+    <g stroke="#D49A3D" stroke-width="1.2" opacity="0.75" transform="rotate(270 300 300)">
+      <line x1="300" y1="33" x2="300" y2="45" />
+      <line x1="323" y1="34" x2="322" y2="46" />
+      <line x1="347" y1="37" x2="344" y2="49" />
+      <line x1="370" y1="42" x2="366" y2="53" />
+      <line x1="392" y1="49" x2="387" y2="60" />
+      <line x1="414" y1="58" x2="407" y2="69" />
+      <line x1="434" y1="69" x2="426" y2="79" />
+      <line x1="453" y1="81" x2="444" y2="90" />
+      <line x1="471" y1="95" x2="460" y2="104" />
+      <line x1="487" y1="110" x2="475" y2="118" />
+      <line x1="501" y1="127" x2="488" y2="134" />
+      <line x1="513" y1="146" x2="499" y2="151" />
+      <line x1="523" y1="165" x2="508" y2="170" />
+      <line x1="531" y1="185" x2="515" y2="189" />
+      <line x1="537" y1="206" x2="520" y2="209" />
+      <line x1="540" y1="228" x2="523" y2="230" />
+      <line x1="542" y1="250" x2="524" y2="251" />
+      <line x1="542" y1="272" x2="524" y2="272" />
+      <line x1="540" y1="294" x2="522" y2="293" />
+    </g>
+
+    <!-- Cardinal Astronomical Nodes (N, E, S, W) -->
+    <circle cx="300" cy="40" r="3" fill="#FF684D" filter="url(#dialGlow)" />
+    <circle cx="560" cy="300" r="3" fill="#FFB93F" />
+    <circle cx="300" cy="560" r="3" fill="#B7DB50" />
+    <circle cx="40" cy="300" r="3" fill="#39BFAE" />
+  </g>
+
+  <!-- =========================================================================
+       GROUP 3: INDEPENDENTLY ROTATABLE CALIBRATED YEAR MILESTONES RING
+       ========================================================================= -->
+  <g id="astrolabe-year-ring" class="origin-center">
+    <!-- Inner Year Track Borders -->
+    <circle cx="300" cy="300" r="226" stroke="#D49A3D" stroke-width="1.5" />
+    <circle cx="300" cy="300" r="172" stroke="#D49A3D" stroke-width="1.5" />
+
+    <!-- 2026 Milestone Marker (Top Apex - 0 deg) -->
+    <g id="year-node-2026" class="cursor-pointer">
+      <line x1="300" y1="172" x2="300" y2="226" stroke="#FF684D" stroke-width="2.5" />
+      <circle cx="300" cy="180" r="4" fill="#FF684D" filter="url(#dialGlow)" />
+      <text x="300" y="206" font-family="'Space Mono', monospace" font-size="13" font-weight="700" fill="#F7F3EC" text-anchor="middle" letter-spacing="1">2026</text>
+      <text x="300" y="220" font-family="'Space Mono', monospace" font-size="8" font-weight="600" fill="#FF684D" text-anchor="middle" letter-spacing="1.5">PRESENT</text>
+    </g>
+
+    <!-- 2027 Milestone Marker (45 deg) -->
+    <g id="year-node-2027" transform="rotate(45 300 300)" class="cursor-pointer">
+      <line x1="300" y1="172" x2="300" y2="226" stroke="#FFB93F" stroke-width="2" />
+      <circle cx="300" cy="180" r="3" fill="#FFB93F" />
+      <text x="300" y="206" font-family="'Space Mono', monospace" font-size="13" font-weight="700" fill="#F7F3EC" text-anchor="middle" letter-spacing="1">2027</text>
+      <text x="300" y="220" font-family="'Space Mono', monospace" font-size="8" font-weight="600" fill="#FFB93F" text-anchor="middle" letter-spacing="1.5">+1 YEAR</text>
+    </g>
+
+    <!-- 2030 Milestone Marker (120 deg) -->
+    <g id="year-node-2030" transform="rotate(120 300 300)" class="cursor-pointer">
+      <line x1="300" y1="172" x2="300" y2="226" stroke="#B7DB50" stroke-width="2" />
+      <circle cx="300" cy="180" r="3" fill="#B7DB50" />
+      <text x="300" y="206" font-family="'Space Mono', monospace" font-size="13" font-weight="700" fill="#F7F3EC" text-anchor="middle" letter-spacing="1">2030</text>
+      <text x="300" y="220" font-family="'Space Mono', monospace" font-size="8" font-weight="600" fill="#B7DB50" text-anchor="middle" letter-spacing="1.5">+4 YRS</text>
+    </g>
+
+    <!-- 2035 Milestone Marker (200 deg) -->
+    <g id="year-node-2035" transform="rotate(200 300 300)" class="cursor-pointer">
+      <line x1="300" y1="172" x2="300" y2="226" stroke="#39BFAE" stroke-width="2" />
+      <circle cx="300" cy="180" r="3" fill="#39BFAE" />
+      <text x="300" y="206" font-family="'Space Mono', monospace" font-size="13" font-weight="700" fill="#F7F3EC" text-anchor="middle" letter-spacing="1">2035</text>
+      <text x="300" y="220" font-family="'Space Mono', monospace" font-size="8" font-weight="600" fill="#39BFAE" text-anchor="middle" letter-spacing="1.5">+9 YRS</text>
+    </g>
+
+    <!-- 2040 Milestone Marker (280 deg) -->
+    <g id="year-node-2040" transform="rotate(280 300 300)" class="cursor-pointer">
+      <line x1="300" y1="172" x2="300" y2="226" stroke="#4F66E8" stroke-width="2" />
+      <circle cx="300" cy="180" r="3" fill="#4F66E8" />
+      <text x="300" y="206" font-family="'Space Mono', monospace" font-size="13" font-weight="700" fill="#F7F3EC" text-anchor="middle" letter-spacing="1">2040</text>
+      <text x="300" y="220" font-family="'Space Mono', monospace" font-size="8" font-weight="600" fill="#4F66E8" text-anchor="middle" letter-spacing="1.5">VAULT</text>
+    </g>
+
+    <!-- Intermediate Astrological Graduations between years -->
+    <g stroke="#D49A3D" stroke-width="0.8" opacity="0.45">
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(15 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(30 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(60 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(75 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(90 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(105 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(140 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(160 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(180 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(220 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(240 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(260 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(300 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(320 300 300)" />
+      <line x1="300" y1="172" x2="300" y2="186" transform="rotate(340 300 300)" />
+    </g>
+  </g>
+
+  <!-- =========================================================================
+       GROUP 4: INDEPENDENTLY ROTATABLE INNER CONSTELLATION & RETE
+       ========================================================================= -->
+  <g id="astrolabe-inner-constellation" class="origin-center">
+    <!-- Concentric Celestial Coordinate Circles -->
+    <circle cx="300" cy="300" r="148" stroke="#39BFAE" stroke-width="0.8" stroke-dasharray="3 6" opacity="0.4" />
+    <circle cx="300" cy="300" r="124" stroke="#B7DB50" stroke-width="0.8" stroke-dasharray="6 6" opacity="0.35" />
+    <circle cx="300" cy="300" r="98" stroke="#FF684D" stroke-width="1.2" opacity="0.5" />
+
+    <!-- Astrolabe Intersecting Arc Claws (Rete Geometry) -->
+    <path d="M202 300 A98 98 0 0 1 398 300" stroke="#FFB93F" stroke-width="1.2" opacity="0.4" fill="none" />
+    <path d="M300 202 A98 98 0 0 1 300 398" stroke="#FFB93F" stroke-width="1.2" opacity="0.4" fill="none" />
+    <path d="M230 230 Q300 170 370 230" stroke="#F7D84B" stroke-width="1" opacity="0.45" fill="none" />
+    <path d="M230 370 Q300 430 370 370" stroke="#F7D84B" stroke-width="1" opacity="0.45" fill="none" />
+
+    <!-- Constellation Star Nodes -->
+    <circle cx="230" cy="230" r="2.5" fill="#F7D84B" />
+    <circle cx="370" cy="230" r="2" fill="#F7F3EC" />
+    <circle cx="230" cy="370" r="2" fill="#F7F3EC" />
+    <circle cx="370" cy="370" r="2.5" fill="#F7D84B" />
+    <circle cx="300" cy="176" r="3" fill="#FF684D" />
+  </g>
+
+  <!-- =========================================================================
+       GROUP 5: CENTRAL CELESTIAL SUN DISK
+       ========================================================================= -->
+  <g id="astrolabe-center-sun" class="origin-center">
+    <!-- Radiant Sun Rays (16 geometric triangular spikes) -->
+    <g fill="#D49A3D" opacity="0.85">
+      <!-- Top/Bottom/Left/Right -->
+      <polygon points="300,218 305,248 295,248" />
+      <polygon points="300,382 305,352 295,352" />
+      <polygon points="218,300 248,305 248,295" />
+      <polygon points="382,300 352,305 352,295" />
+      <!-- Diagonals -->
+      <polygon points="242,242 267,260 260,267" />
+      <polygon points="358,358 333,340 340,333" />
+      <polygon points="242,358 260,333 267,340" />
+      <polygon points="358,242 340,267 333,260" />
+    </g>
+
+    <!-- Wavy Flares -->
+    <g stroke="#FFB93F" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7">
+      <path d="M300 252 Q306 235 300 226" />
+      <path d="M300 348 Q294 365 300 374" />
+      <path d="M252 300 Q235 294 226 300" />
+      <path d="M348 300 Q365 306 374 300" />
+    </g>
+
+    <!-- Central Glowing Sphere Core -->
+    <circle cx="300" cy="300" r="48" fill="url(#sunCoreGrad)" filter="drop-shadow(0px 4px 16px rgba(255,104,77,0.5))" />
+    
+    <!-- Engraved Concentric Core Ring -->
+    <circle cx="300" cy="300" r="44" stroke="#FFF2A8" stroke-width="1" stroke-dasharray="2 4" opacity="0.6" />
+    <circle cx="300" cy="300" r="32" stroke="#8C5E1E" stroke-width="1" opacity="0.7" />
+
+    <!-- Core Pivot Center Rivet -->
+    <circle cx="300" cy="300" r="10" fill="#4A300A" stroke="#FFD875" stroke-width="2" />
+    <circle cx="300" cy="300" r="4" fill="#F7D84B" />
+  </g>
+
+  <!-- =========================================================================
+       GROUP 6: ROTATABLE INDICATOR POINTER (ARMILLARY INDEX NEEDLE)
+       ========================================================================= -->
+  <g id="astrolabe-indicator-needle" class="origin-center" style="transform-origin: 300px 300px;">
+    <!-- Pointer arm pointing to 2026 apex -->
+    <path d="M296 300 L297 160 L300 148 L303 160 L304 300 Z" fill="#FF684D" filter="url(#dialGlow)" />
+    <!-- Golden counterweight tail pointing down -->
+    <path d="M297 300 L298 360 L300 372 L302 360 L303 300 Z" fill="#D49A3D" opacity="0.8" />
+    <!-- Ornate needle tip diamond -->
+    <polygon points="300,140 304,148 300,154 296,148" fill="#FFF2A8" stroke="#FF684D" stroke-width="1" />
+  </g>
+</svg>
+

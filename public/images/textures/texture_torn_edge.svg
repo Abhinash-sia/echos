@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 40" width="1200" height="40" preserveAspectRatio="none">
+  <!-- Organic Deckle / Torn Paper Edge Path -->
+  <path d="M 0,40 L 0,18 
+           Q 25,12 50,19 T 100,16 T 150,22 T 200,14 T 250,20 T 300,15 
+           T 350,23 T 400,17 T 450,21 T 500,13 T 550,19 T 600,16 
+           T 650,24 T 700,15 T 750,20 T 800,14 T 850,22 T 900,17 
+           T 950,21 T 1000,13 T 1050,19 T 1100,15 T 1150,23 T 1200,18 
+           L 1200,40 Z" 
+        fill="#F6F1EA" />
+</svg>

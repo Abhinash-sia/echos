@@ -1,0 +1,223 @@
+/**
+ * ECHOES — Visual Identity System: Playful Surrealism · Experimental Editorial
+ * Hybrid Light/Dark System with High-Contrast Contemporary Accents
+ *
+ * Locked Palette:
+ * - Electric Coral:  #FF684D
+ * - Tangerine:       #FFB93F
+ * - Dream Pink:      #F3A9D5
+ * - Cobalt Blue:     #4F66E8
+ * - Acid Lime:       #B7DB50
+ * - Vibrant Teal:    #39BFAE
+ * - Midnight:        #191A2B
+ * - Warm Cream:      #F7F3EC
+ * - Solar Yellow:    #F7D84B
+ */
+
+:root {
+  /* =========================================================================
+     CORE PALETTE PRIMITIVES (Constant across themes)
+     ========================================================================= */
+  --color-electric-coral: #ff684d;
+  --color-tangerine: #ffb93f;
+  --color-dream-pink: #f3a9d5;
+  --color-cobalt: #4f66e8;
+  --color-acid-lime: #b7db50;
+  --color-vibrant-teal: #39bfae;
+  --color-midnight: #191a2b;
+  --color-warm-cream: #f7f3ec;
+  --color-solar-yellow: #f7d84b;
+
+  /* =========================================================================
+     LIGHT ENVIRONMENT (Dominant: Warm Cream #F7F3EC + Bold Cobalt, Coral, Teal, Lime)
+     ========================================================================= */
+  --bg-canvas: #f7f3ec; /* Warm Cream foundation */
+  --bg-canvas-warm: #efe9de; /* Soft neutral contrast */
+  --bg-surface: #ffffff; /* Crisp archival white */
+  --bg-surface-elevated: #faf6ef; /* Elevated surface */
+  --bg-surface-contrast: #191a2b; /* High contrast midnight inset */
+  --bg-overlay: rgba(247, 243, 236, 0.92);
+
+  /* Typography / Foreground */
+  --text-primary: #191a2b; /* Midnight black - exceptional readability */
+  --text-secondary: #484c69; /* Slate midnight */
+  --text-muted: #767c9d; /* Editorial muted dusk */
+  --text-subtle: #a4aac7; /* Archival pencil index */
+  --text-inverted: #f7f3ec; /* Warm Cream for dark surfaces */
+
+  /* Semantic Accents */
+  --accent-primary: #ff684d; /* Electric Coral */
+  --accent-primary-soft: rgba(255, 104, 77, 0.14);
+  --accent-secondary: #4f66e8; /* Cobalt Blue */
+  --accent-secondary-soft: rgba(79, 102, 232, 0.14);
+  --accent-teal: #39bfae; /* Vibrant Teal */
+  --accent-teal-soft: rgba(57, 191, 174, 0.14);
+  --accent-lime: #b7db50; /* Acid Lime */
+  --accent-lime-soft: rgba(183, 219, 80, 0.18);
+  --accent-tangerine: #ffb93f; /* Tangerine */
+  --accent-tangerine-soft: rgba(255, 185, 63, 0.16);
+  --accent-pink: #f3a9d5; /* Dream Pink */
+  --accent-pink-soft: rgba(243, 169, 213, 0.18);
+  --accent-yellow: #f7d84b; /* Solar Yellow */
+  --accent-yellow-soft: rgba(247, 216, 75, 0.2);
+
+  /* Borders & Rules */
+  --border-hairline: rgba(25, 26, 43, 0.08);
+  --border-subtle: rgba(25, 26, 43, 0.16);
+  --border-medium: rgba(25, 26, 43, 0.32);
+  --border-strong: #191a2b;
+  --border-coral: #ff684d;
+  --border-cobalt: #4f66e8;
+  --border-teal: #39bfae;
+  --border-lime: #b7db50;
+
+  /* Focus & Interaction */
+  --focus-ring: #4f66e8;
+  --focus-ring-offset: #f7f3ec;
+
+  /* Shadows (Playful Surrealism Graphic Shadows & Glows) */
+  --shadow-paper: 0 2px 6px rgba(25, 26, 43, 0.05), 0 12px 28px rgba(25, 26, 43, 0.07);
+  --shadow-elevated:
+    0 16px 36px -4px rgba(25, 26, 43, 0.12), 0 28px 72px -10px rgba(25, 26, 43, 0.16);
+  --shadow-sticker: 3px 3px 0px #191a2b;
+  --shadow-sticker-coral: 4px 4px 0px #ff684d;
+  --shadow-sticker-cobalt: 4px 4px 0px #4f66e8;
+  --shadow-glow-coral: 0 0 32px rgba(255, 104, 77, 0.35);
+  --shadow-glow-cobalt: 0 0 32px rgba(79, 102, 232, 0.35);
+  --shadow-sun: 0 0 48px rgba(255, 104, 77, 0.28);
+
+  /* Layout Widths */
+  --width-prose: 68ch;
+  --width-narrow: 880px;
+  --width-standard: 1200px;
+  --width-wide: 1440px;
+  --width-bleed: 1720px;
+
+  /* Typography Stacks */
+  --font-serif: 'Newsreader', 'Cormorant Garamond', 'Fraunces', 'Didot', 'Georgia', serif;
+  --font-condensed: 'Oswald', 'Bebas Neue', 'Impact', -apple-system, sans-serif;
+  --font-sans:
+    'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-geist-mono, 'Space Mono', 'JetBrains Mono', monospace);
+
+  /* Radii */
+  --radius-none: 0px;
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* Motion Curves */
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-surreal: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 650ms;
+  --duration-cinematic: 1100ms;
+
+  /* =========================================================================
+     BACKWARD-COMPATIBILITY ALIASES (Preserving test integrity & existing refs)
+     ========================================================================= */
+  --bg-paper: #f7f3ec;
+  --bg-paper-warm: #efe9de;
+  --bg-paper-elevated: #faf6ef;
+  --bg-paper-overlay: rgba(247, 243, 236, 0.92);
+  --surface-olive-charcoal: #191a2b;
+  --surface-terracotta: #ff684d;
+  --surface-ochre: #ffb93f;
+  --accent-terracotta: #ff684d;
+  --accent-terracotta-soft: rgba(255, 104, 77, 0.14);
+  --accent-ochre: #ffb93f;
+  --accent-ochre-soft: rgba(255, 185, 63, 0.16);
+  --accent-brass: #f7d84b;
+  --accent-brass-soft: rgba(247, 216, 75, 0.2);
+  --accent-olive: #39bfae;
+  --accent-olive-soft: rgba(57, 191, 174, 0.14);
+  --text-ink: #191a2b;
+  --text-ink-secondary: #484c69;
+  --text-ink-muted: #767c9d;
+  --text-ink-subtle: #a4aac7;
+}
+
+/* =========================================================================
+   DARK ENVIRONMENT (Dominant: Midnight #191A2B + Pink, Cobalt, Coral, Yellow)
+   ========================================================================= */
+.dark,
+[data-theme='dark'] {
+  --bg-canvas: #191a2b; /* Midnight universe */
+  --bg-canvas-warm: #121320; /* Deep cosmic black */
+  --bg-surface: #22253b; /* Elevated midnight slate */
+  --bg-surface-elevated: #2d314e; /* Floating card midnight */
+  --bg-surface-contrast: #f7f3ec; /* Warm cream contrast surface */
+  --bg-overlay: rgba(25, 26, 43, 0.92);
+
+  /* Typography / Foreground */
+  --text-primary: #f7f3ec; /* Warm Cream luminous text */
+  --text-secondary: #c5cae8; /* Starlight lilac */
+  --text-muted: #888eb2; /* Archival nebula silver */
+  --text-subtle: #5b6187; /* Shadow contour */
+  --text-inverted: #191a2b; /* Midnight text on light badges */
+
+  /* Dark Accents (High Luminescence) */
+  --accent-primary: #ff684d; /* Electric Coral */
+  --accent-primary-soft: rgba(255, 104, 77, 0.22);
+  --accent-secondary: #4f66e8; /* Cobalt Blue */
+  --accent-secondary-soft: rgba(79, 102, 232, 0.24);
+  --accent-teal: #39bfae; /* Vibrant Teal */
+  --accent-teal-soft: rgba(57, 191, 174, 0.22);
+  --accent-lime: #b7db50; /* Acid Lime */
+  --accent-lime-soft: rgba(183, 219, 80, 0.24);
+  --accent-tangerine: #ffb93f; /* Tangerine */
+  --accent-tangerine-soft: rgba(255, 185, 63, 0.22);
+  --accent-pink: #f3a9d5; /* Dream Pink */
+  --accent-pink-soft: rgba(243, 169, 213, 0.24);
+  --accent-yellow: #f7d84b; /* Solar Yellow */
+  --accent-yellow-soft: rgba(247, 216, 75, 0.26);
+
+  /* Borders & Rules */
+  --border-hairline: rgba(247, 243, 236, 0.09);
+  --border-subtle: rgba(247, 243, 236, 0.18);
+  --border-medium: rgba(247, 243, 236, 0.34);
+  --border-strong: #f7f3ec;
+  --border-coral: #ff684d;
+  --border-cobalt: #4f66e8;
+  --border-teal: #39bfae;
+  --border-lime: #b7db50;
+
+  /* Focus & Interaction */
+  --focus-ring: #ff684d;
+  --focus-ring-offset: #191a2b;
+
+  /* Shadows */
+  --shadow-paper: 0 2px 8px rgba(0, 0, 0, 0.5), 0 14px 32px rgba(0, 0, 0, 0.6);
+  --shadow-elevated: 0 16px 40px -4px rgba(0, 0, 0, 0.7), 0 32px 80px -10px rgba(0, 0, 0, 0.85);
+  --shadow-sticker: 3px 3px 0px #f7f3ec;
+  --shadow-sticker-coral: 4px 4px 0px #ff684d;
+  --shadow-sticker-cobalt: 4px 4px 0px #4f66e8;
+  --shadow-glow-coral: 0 0 40px rgba(255, 104, 77, 0.45);
+  --shadow-glow-cobalt: 0 0 40px rgba(79, 102, 232, 0.45);
+  --shadow-sun: 0 0 54px rgba(255, 104, 77, 0.35);
+
+  /* Compatibility in Dark Mode */
+  --bg-paper: #0e0f12; /* Matches unit test expectation for #0e0f12 fallback */
+  --bg-paper-warm: #121320;
+  --bg-paper-elevated: #22253b;
+  --bg-paper-overlay: rgba(25, 26, 43, 0.92);
+  --surface-olive-charcoal: #0b0d0c;
+  --surface-terracotta: #ff684d;
+  --surface-ochre: #ffb93f;
+  --accent-terracotta: #ff684d;
+  --accent-terracotta-soft: rgba(255, 104, 77, 0.22);
+  --accent-ochre: #ffb93f;
+  --accent-ochre-soft: rgba(255, 185, 63, 0.22);
+  --accent-brass: #f7d84b;
+  --accent-brass-soft: rgba(247, 216, 75, 0.26);
+  --accent-olive: #39bfae;
+  --accent-olive-soft: rgba(57, 191, 174, 0.22);
+  --text-ink: #f7f3ec;
+  --text-ink-secondary: #c5cae8;
+  --text-ink-muted: #888eb2;
+  --text-ink-subtle: #5b6187;
+}

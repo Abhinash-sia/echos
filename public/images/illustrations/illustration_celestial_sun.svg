@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" fill="none">
+  <!-- Outer Astronomical Coordinate Ring -->
+  <circle cx="200" cy="200" r="190" stroke="#C3532B" stroke-width="1.2" stroke-dasharray="4 6" opacity="0.6" />
+  <circle cx="200" cy="200" r="176" stroke="#D9883B" stroke-width="0.8" opacity="0.4" />
+  <circle cx="200" cy="200" r="150" stroke="#C3532B" stroke-width="1.5" />
+  
+  <!-- Subtle Concentric Rays -->
+  <g stroke="#D9883B" stroke-width="1" opacity="0.5">
+    <line x1="200" y1="10" x2="200" y2="40" />
+    <line x1="200" y1="360" x2="200" y2="390" />
+    <line x1="10" y1="200" x2="40" y2="200" />
+    <line x1="360" y1="200" x2="390" y2="200" />
+    <line x1="65" y1="65" x2="88" y2="88" />
+    <line x1="312" y1="312" x2="335" y2="335" />
+    <line x1="65" y1="335" x2="88" y2="312" />
+    <line x1="312" y1="88" x2="335" y2="65" />
+  </g>
+  
+  <!-- Radial Sun Flames / Rays -->
+  <g fill="#C3532B" opacity="0.85">
+    <!-- 16 Radial Symmetrical Spikes -->
+    <path d="M200 60 L204 120 L196 120 Z" />
+    <path d="M200 340 L204 280 L196 280 Z" />
+    <path d="M60 200 L120 204 L120 196 Z" />
+    <path d="M340 200 L280 204 L280 196 Z" />
+    <path d="M101 101 L145 142 L139 148 Z" />
+    <path d="M299 299 L255 258 L261 252 Z" />
+    <path d="M101 299 L142 255 L148 261 Z" />
+    <path d="M299 101 L258 145 L252 139 Z" />
+  </g>
+
+  <!-- Wavy Secondary Rays -->
+  <g stroke="#D9883B" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8">
+    <path d="M200 130 Q 206 100 200 75" />
+    <path d="M200 270 Q 194 300 200 325" />
+    <path d="M130 200 Q 100 194 75 200" />
+    <path d="M270 200 Q 300 206 325 200" />
+  </g>
+
+  <!-- Main Terracotta & Ochre Solar Core -->
+  <defs>
+    <radialGradient id="sunCore" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#E59E4B" />
+      <stop offset="65%" stop-color="#C3532B" />
+      <stop offset="100%" stop-color="#9C3A19" />
+    </radialGradient>
+  </defs>
+  <circle cx="200" cy="200" r="72" fill="url(#sunCore)" filter="drop-shadow(0px 8px 24px rgba(195,83,43,0.35))" />
+  
+  <!-- Subtle Internal Solar Compass Markings -->
+  <circle cx="200" cy="200" r="62" stroke="#FFF" stroke-width="0.75" stroke-dasharray="2 4" opacity="0.4" />
+  <circle cx="200" cy="200" r="32" stroke="#FFF" stroke-width="0.5" opacity="0.3" />
+  <circle cx="200" cy="200" r="6" fill="#FFF" opacity="0.6" />
+</svg>
