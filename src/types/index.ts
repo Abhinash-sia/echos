@@ -18,3 +18,4 @@ export interface ApiErrorResponse {
 export * from './memory';
 export * from './capsule';
 export * from './timeline';
+export * from './ai';

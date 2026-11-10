@@ -12,6 +12,7 @@ import {
   SparklesIcon,
   UserIcon,
   SettingsIcon,
+  LayoutGridIcon,
 } from '@/components/icons/Icons';
 
 export interface NavItem {
@@ -41,6 +42,11 @@ export const APP_NAV_ITEMS: NavItem[] = [
     label: 'Timeline',
     href: '/timeline',
     icon: <CalendarIcon size={16} />,
+  },
+  {
+    label: 'AI Board',
+    href: '/board',
+    icon: <LayoutGridIcon size={16} />,
   },
   {
     label: 'Profile',

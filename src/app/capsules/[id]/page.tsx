@@ -7,10 +7,13 @@ import Image from 'next/image';
 import { AppShell } from '@/components/layout/AppShell';
 import { Container } from '@/components/layout/Container';
 import { capsulesApi } from '@/lib/api/capsules';
+import { aiApi } from '@/lib/api/ai';
 import { ApiClientError } from '@/lib/api/types';
 import { TimeCapsuleItem } from '@/types/capsule';
 import { MemoryPhoto } from '@/types/memory';
+import { CapsuleThenVsNowInsightData } from '@/types/ai';
 import { CountdownTimer } from '@/components/capsules/CountdownTimer';
+import { AiConnectionBadge } from '@/components/ai/AiConnectionBadge';
 import {
   LockIcon,
   UnlockIcon,
@@ -19,6 +22,8 @@ import {
   SparklesIcon,
   CameraIcon,
   AlertCircleIcon,
+  FeatherIcon,
+  ArrowRightIcon,
 } from '@/components/icons/Icons';
 import { Button } from '@/components/ui/Button';
 import { PhotoLightbox } from '@/components/ui/PhotoLightbox';
@@ -52,6 +57,11 @@ function CapsuleDetailContent({ params }: { params: Promise<{ id: string }> }) {
   // Photo lightbox state
   const [activePhoto, setActivePhoto] = useState<MemoryPhoto | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  // Then vs. Now AI insight state
+  const [insight, setInsight] = useState<CapsuleThenVsNowInsightData | null>(null);
+  const [isGeneratingInsight, setIsGeneratingInsight] = useState(false);
+  const [insightError, setInsightError] = useState<string | null>(null);
 
   const fetchCapsule = useCallback(() => {
     setRefreshTrigger((prev) => prev + 1);
@@ -151,6 +161,27 @@ function CapsuleDetailContent({ params }: { params: Promise<{ id: string }> }) {
       toast.error('Cannot Unseal Capsule', errorMsg);
     } finally {
       setIsUnsealing(false);
+    }
+  };
+
+  // Handle "Then vs. Now" AI insight generation
+  const handleGenerateInsight = async () => {
+    if (!id) return;
+    setIsGeneratingInsight(true);
+    setInsightError(null);
+
+    try {
+      const data = await aiApi.getCapsuleInsight(id);
+      setInsight(data);
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : 'Could not generate Then vs. Now reflection right now.';
+      setInsightError(msg);
+      toast.error('Reflection Failed', msg);
+    } finally {
+      setIsGeneratingInsight(false);
     }
   };
 
@@ -464,6 +495,130 @@ function CapsuleDetailContent({ params }: { params: Promise<{ id: string }> }) {
                     </div>
                   )}
                 </article>
+              )}
+
+              {/* =====================================================================
+                  THEN VS. NOW AI REFLECTION (Only when capsule is unsealed & opened)
+                 ===================================================================== */}
+              {capsule.isOpened && (
+                <section className="rounded-3xl border-2 border-[var(--vibrant-teal)]/25 bg-[var(--surface-color)] p-6 md:p-8 neu-raised space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold uppercase tracking-wider bg-[var(--vibrant-teal)]/10 text-[var(--vibrant-teal)] border border-[var(--vibrant-teal)]/20">
+                          <SparklesIcon size={11} />
+                          <span>Then vs. Now AI Insight</span>
+                        </div>
+                        <AiConnectionBadge />
+                      </div>
+                      <h2 className="font-editorial text-2xl font-bold text-[var(--foreground)]">
+                        Compare Past Self With Today
+                      </h2>
+                      <p className="text-xs sm:text-sm text-[var(--ink-muted)]">
+                        Connects this unsealed letter with your recent journal memories to reveal
+                        what evolved and what endured.
+                      </p>
+                    </div>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleGenerateInsight}
+                      disabled={isGeneratingInsight}
+                      className="gap-1.5 shrink-0 border-[var(--vibrant-teal)]/40 text-[var(--vibrant-teal)] hover:bg-[var(--vibrant-teal)]/10"
+                    >
+                      <SparklesIcon size={14} />
+                      <span>
+                        {isGeneratingInsight
+                          ? 'Analyzing...'
+                          : insight
+                            ? 'Refresh Insight'
+                            : 'Compare Then vs. Now'}
+                      </span>
+                    </Button>
+                  </div>
+
+                  {insightError && (
+                    <div className="rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4 font-mono text-xs text-rose-600 dark:text-rose-400">
+                      {insightError}
+                    </div>
+                  )}
+
+                  {insight && (
+                    <div className="space-y-5 pt-2 border-t border-black/10 dark:border-white/10 animate-fadeIn">
+                      <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
+                        <span className="px-3 py-1 rounded-full bg-[var(--electric-coral)]/10 text-[var(--electric-coral)] font-semibold border border-[var(--electric-coral)]/20">
+                          {insight.eraLabel}
+                        </span>
+                        <span className="text-[var(--ink-muted)]">
+                          Compared against {insight.comparedMemoriesCount} recent journal{' '}
+                          {insight.comparedMemoriesCount === 1 ? 'memory' : 'memories'}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] p-5 space-y-2">
+                          <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-[var(--cobalt-blue)]">
+                            Then · When You Sealed It
+                          </div>
+                          <p className="text-sm text-[var(--foreground)]/90 leading-relaxed">
+                            {insight.thenSummary}
+                          </p>
+                        </div>
+
+                        <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] p-5 space-y-2">
+                          <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-[var(--vibrant-teal)]">
+                            Now · Recent Journal Context
+                          </div>
+                          <p className="text-sm text-[var(--foreground)]/90 leading-relaxed">
+                            {insight.nowSummary}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--ink-muted)]">
+                          Key Shifts &amp; Echoes
+                        </h3>
+                        <ul className="space-y-2 list-none p-0 m-0">
+                          {insight.shifts.map((shift, idx) => (
+                            <li
+                              key={idx}
+                              className="flex items-start gap-2.5 text-sm text-[var(--foreground)]/90"
+                            >
+                              <span className="w-1.5 h-1.5 rounded-full bg-[var(--electric-coral)] mt-2 shrink-0" />
+                              <span>{shift}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="rounded-2xl border border-[var(--electric-coral)]/20 bg-[var(--electric-coral)]/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="space-y-1">
+                          <div className="font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--electric-coral)]">
+                            Suggested Follow-up Prompt
+                          </div>
+                          <p className="text-sm italic text-[var(--foreground)]">
+                            &ldquo;{insight.reflectionPrompt}&rdquo;
+                          </p>
+                        </div>
+                        <Link href="/memories/new" className="shrink-0">
+                          <Button variant="coral" size="sm" className="gap-1.5">
+                            <FeatherIcon size={13} />
+                            <span>Write Reflection</span>
+                            <ArrowRightIcon size={13} />
+                          </Button>
+                        </Link>
+                      </div>
+
+                      {insight.warning && (
+                        <p className="font-mono text-[10px] text-[var(--ink-muted)] opacity-80">
+                          {insight.warning}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </section>
               )}
             </div>
           )}

@@ -1,5 +1,15 @@
 import { z } from 'zod';
 
+const optionalNonEmptyString = z.preprocess(
+  (val) => (typeof val === 'string' && val.trim() === '' ? undefined : val),
+  z.string().optional()
+);
+
+const optionalUrl = z.preprocess(
+  (val) => (typeof val === 'string' && val.trim() === '' ? undefined : val),
+  z.string().url().optional()
+);
+
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   APP_URL: z.string().default('http://localhost:3000'),
@@ -15,6 +25,9 @@ const envSchema = z.object({
   CLOUDINARY_API_KEY: z.string().optional(),
   CLOUDINARY_API_SECRET: z.string().optional(),
   CLOUDINARY_AUTH_TOKEN_KEY: z.string().optional(),
+  AI_BASE_URL: optionalUrl,
+  AI_API_KEY: optionalNonEmptyString,
+  AI_MODEL: optionalNonEmptyString,
 });
 
 export type Env = z.infer<typeof envSchema>;
