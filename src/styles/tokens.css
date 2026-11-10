@@ -31,12 +31,15 @@
   /* =========================================================================
      LIGHT ENVIRONMENT (Dominant: Warm Cream #F7F3EC + Bold Cobalt, Coral, Teal, Lime)
      ========================================================================= */
-  --bg-canvas: #f7f3ec; /* Warm Cream foundation */
-  --bg-canvas-warm: #efe9de; /* Soft neutral contrast */
-  --bg-surface: #ffffff; /* Crisp archival white */
-  --bg-surface-elevated: #faf6ef; /* Elevated surface */
+  --bg-canvas: #ede5d0; /* Aged amber parchment — deeper, more nostalgic */
+  --bg-canvas-warm: #e3d5bb; /* Deeper warm neutral contrast */
+  --bg-surface: #f8f3e8; /* Warm archival surface */
+  --bg-surface-elevated: #f4edd8; /* Elevated warm surface */
   --bg-surface-contrast: #191a2b; /* High contrast midnight inset */
-  --bg-overlay: rgba(247, 243, 236, 0.92);
+  --bg-overlay: rgba(237, 229, 208, 0.92);
+
+  /* Nostalgic sepia tint token */
+  --color-sepia-wash: rgba(90, 60, 20, 0.05);
 
   /* Typography / Foreground */
   --text-primary: #191a2b; /* Midnight black - exceptional readability */
@@ -120,10 +123,10 @@
   /* =========================================================================
      BACKWARD-COMPATIBILITY ALIASES (Preserving test integrity & existing refs)
      ========================================================================= */
-  --bg-paper: #f7f3ec;
-  --bg-paper-warm: #efe9de;
-  --bg-paper-elevated: #faf6ef;
-  --bg-paper-overlay: rgba(247, 243, 236, 0.92);
+  --bg-paper: #ede5d0;
+  --bg-paper-warm: #e3d5bb;
+  --bg-paper-elevated: #f4edd8;
+  --bg-paper-overlay: rgba(237, 229, 208, 0.92);
   --surface-olive-charcoal: #191a2b;
   --surface-terracotta: #ff684d;
   --surface-ochre: #ffb93f;
@@ -146,18 +149,18 @@
    ========================================================================= */
 .dark,
 [data-theme='dark'] {
-  --bg-canvas: #191a2b; /* Midnight universe */
-  --bg-canvas-warm: #121320; /* Deep cosmic black */
-  --bg-surface: #22253b; /* Elevated midnight slate */
-  --bg-surface-elevated: #2d314e; /* Floating card midnight */
+  --bg-canvas: #12100d; /* Candlelit obsidian foundation */
+  --bg-canvas-warm: #171410; /* Deep dark walnut */
+  --bg-surface: #1d1914; /* Elevated warm espresso slate */
+  --bg-surface-elevated: #26211b; /* Floating card warm bronze-obsidian */
   --bg-surface-contrast: #f7f3ec; /* Warm cream contrast surface */
-  --bg-overlay: rgba(25, 26, 43, 0.92);
+  --bg-overlay: rgba(18, 16, 13, 0.92);
 
   /* Typography / Foreground */
   --text-primary: #f7f3ec; /* Warm Cream luminous text */
-  --text-secondary: #c5cae8; /* Starlight lilac */
-  --text-muted: #888eb2; /* Archival nebula silver */
-  --text-subtle: #5b6187; /* Shadow contour */
+  --text-secondary: #d6cbb9; /* Antique archival linen */
+  --text-muted: #9e927f; /* Warm pewter */
+  --text-subtle: #6b6153; /* Shadow sepia contour */
   --text-inverted: #191a2b; /* Midnight text on light badges */
 
   /* Dark Accents (High Luminescence) */
@@ -202,9 +205,9 @@
 
   /* Compatibility in Dark Mode */
   --bg-paper: #0e0f12; /* Matches unit test expectation for #0e0f12 fallback */
-  --bg-paper-warm: #121320;
-  --bg-paper-elevated: #22253b;
-  --bg-paper-overlay: rgba(25, 26, 43, 0.92);
+  --bg-paper-warm: #171410;
+  --bg-paper-elevated: #1d1914;
+  --bg-paper-overlay: rgba(18, 16, 13, 0.92);
   --surface-olive-charcoal: #0b0d0c;
   --surface-terracotta: #ff684d;
   --surface-ochre: #ffb93f;
@@ -217,7 +220,7 @@
   --accent-olive: #39bfae;
   --accent-olive-soft: rgba(57, 191, 174, 0.22);
   --text-ink: #f7f3ec;
-  --text-ink-secondary: #c5cae8;
-  --text-ink-muted: #888eb2;
-  --text-ink-subtle: #5b6187;
+  --text-ink-secondary: #d6cbb9;
+  --text-ink-muted: #9e927f;
+  --text-ink-subtle: #6b6153;
 }

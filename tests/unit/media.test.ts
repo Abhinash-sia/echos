@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import {
   validateImageBuffer,
   generateSignedPhotoUrl,
@@ -92,7 +92,29 @@ describe('Media & Cloudinary Utilities Unit Tests', () => {
   });
 
   describe('generateSignedPhotoUrl & Token Authentication', () => {
-    it('should generate an authenticated URL containing official __cld_token__ with exp and hmac', () => {
+    const originalTokenKey = process.env.CLOUDINARY_AUTH_TOKEN_KEY;
+
+    afterEach(() => {
+      if (originalTokenKey === undefined) {
+        delete process.env.CLOUDINARY_AUTH_TOKEN_KEY;
+      } else {
+        process.env.CLOUDINARY_AUTH_TOKEN_KEY = originalTokenKey;
+      }
+    });
+
+    it('should generate a standard authenticated signed URL when CLOUDINARY_AUTH_TOKEN_KEY is unset', () => {
+      delete process.env.CLOUDINARY_AUTH_TOKEN_KEY;
+      const publicId = 'echoes/users/u123/memories/m456/sample_photo';
+      const signedUrl = generateSignedPhotoUrl(publicId);
+
+      expect(signedUrl).toContain('image/authenticated');
+      expect(signedUrl).toMatch(/\/s--[A-Za-z0-9_-]+--\//);
+      expect(signedUrl).not.toContain('__cld_token__=');
+      expect(signedUrl).toContain(publicId);
+    });
+
+    it('should generate an authenticated URL containing __cld_token__ when CLOUDINARY_AUTH_TOKEN_KEY is set', () => {
+      process.env.CLOUDINARY_AUTH_TOKEN_KEY = '0123456789abcdef0123456789abcdef';
       const publicId = 'echoes/users/u123/memories/m456/sample_photo';
       const beforeTime = Math.round(Date.now() / 1000) + 1800;
       const signedUrl = generateSignedPhotoUrl(publicId, { expiresInSeconds: 1800 });
@@ -110,7 +132,8 @@ describe('Media & Cloudinary Utilities Unit Tests', () => {
       expect(exp).toBeLessThanOrEqual(afterTime + 1);
     });
 
-    it('should default to 900 seconds (15 minutes) expiration enforced in __cld_token__', () => {
+    it('should default to 900 seconds (15 minutes) expiration in __cld_token__ when token key is set', () => {
+      process.env.CLOUDINARY_AUTH_TOKEN_KEY = '0123456789abcdef0123456789abcdef';
       const publicId = 'echoes/users/u123/memories/m456/default_expiry';
       const beforeTime = Math.round(Date.now() / 1000) + 900;
       const signedUrl = generateSignedPhotoUrl(publicId);

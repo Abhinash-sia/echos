@@ -7,6 +7,7 @@ import { SphereIcon } from '../icons/Icons';
 export interface WebGLCanvasProps {
   sceneRenderer: SceneRenderer;
   className?: string;
+  canvasClassName?: string;
   fallbackTitle?: string;
   forceFallback?: boolean;
 }
@@ -14,6 +15,7 @@ export interface WebGLCanvasProps {
 export function WebGLCanvas({
   sceneRenderer,
   className = '',
+  canvasClassName = 'cursor-grab active:cursor-grabbing',
   fallbackTitle = 'Memory Artifact (Static Preview)',
   forceFallback = false,
 }: WebGLCanvasProps) {
@@ -214,7 +216,7 @@ export function WebGLCanvas({
     >
       <canvas
         ref={canvasRef}
-        className="w-full h-full block cursor-grab active:cursor-grabbing touch-none"
+        className={`w-full h-full block touch-none ${canvasClassName}`}
       />
     </div>
   );

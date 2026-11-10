@@ -13,10 +13,10 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { CheckIcon, AlertCircleIcon } from '@/components/icons/Icons';
 
-function EditMemoryContent({ params }: { params: Promise<{ id: string }> | { id: string } }) {
+function EditMemoryContent({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const toast = useToast();
-  const resolvedParams = use(Promise.resolve(params));
+  const resolvedParams = use(params);
   const memoryId = resolvedParams.id;
 
   // Form State
@@ -332,7 +332,7 @@ function EditMemoryContent({ params }: { params: Promise<{ id: string }> | { id:
 export default function EditMemoryPage({
   params,
 }: {
-  params: Promise<{ id: string }> | { id: string };
+  params: Promise<{ id: string }>;
 }) {
   return (
     <React.Suspense

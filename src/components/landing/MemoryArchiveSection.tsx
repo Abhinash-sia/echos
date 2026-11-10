@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Container } from '@/components/layout/Container';
 import { Button } from '@/components/ui/Button';
 import { BookOpenIcon, FilterIcon, ArrowRightIcon, SparklesIcon } from '@/components/icons/Icons';
+import { NeumorphicCard } from '@/components/landing/NeumorphicCard';
 import { gsap, isReducedMotion } from '@/lib/motion';
 
 interface ArchivalMemory {
@@ -151,6 +152,24 @@ export function MemoryArchiveSection() {
         });
       }
 
+      // 2b. Scrubbed curtain clip-path unveil on the specimen photograph
+      if (imageFrameRef.current) {
+        gsap.fromTo(
+          imageFrameRef.current,
+          { clipPath: 'inset(10% 3% 10% 3% round 12px)' },
+          {
+            clipPath: 'inset(0% 0% 0% 0% round 12px)',
+            ease: 'none',
+            scrollTrigger: {
+              trigger: featuredRef.current,
+              start: 'top 90%',
+              end: 'top 40%',
+              scrub: 0.6,
+            },
+          }
+        );
+      }
+
       // 3. Right Ledger List Staggered Entrance
       if (ledgerListRef.current) {
         gsap.fromTo(
@@ -226,10 +245,10 @@ export function MemoryArchiveSection() {
     <section
       ref={sectionRef}
       id="archive"
-      className="relative bg-[#F7F3EC] dark:bg-[#151726] text-[#191A2B] dark:text-[#F7F3EC] py-28 sm:py-36 overflow-hidden border-b border-[#191A2B]/10 dark:border-white/10 transition-colors duration-300"
+      className="film-grain relative bg-[#EDE5D0] dark:bg-[#171410] text-[#191A2B] dark:text-[#F7F3EC] py-28 sm:py-36 overflow-hidden border-b border-[#191A2B]/10 dark:border-amber-200/10 transition-colors duration-300"
     >
       {/* Subtle Archival Watermark Grid / Paper Texture */}
-      <div className="absolute inset-0 opacity-25 dark:opacity-5 pointer-events-none mix-blend-multiply dark:mix-blend-overlay">
+      <div className="absolute inset-0 opacity-25 dark:opacity-15 pointer-events-none mix-blend-multiply dark:mix-blend-overlay">
         <Image
           src="/images/backgrounds/bg_parchment_wash.webp"
           alt=""
@@ -266,7 +285,7 @@ export function MemoryArchiveSection() {
               <BookOpenIcon size={14} />
               <span>THE LIVING MEMORY ARCHIVE</span>
               <span className="h-px w-8 bg-[#FF684D]/40" />
-              <span className="text-[#767C9D] dark:text-[#A4AAC7] font-normal">
+              <span className="text-[#767C9D] dark:text-[#C8BCAA] font-normal">
                 FOLIO № 04 · RECORDED REFLECTION
               </span>
             </div>
@@ -274,14 +293,14 @@ export function MemoryArchiveSection() {
             {/* Monumental Headline */}
             <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-[#191A2B] dark:text-[#F7F3EC] tracking-tight leading-[1.12]">
               An Architectural Journal.{' '}
-              <span className="italic font-normal text-[#FF684D] dark:text-[#39BFAE]">
+              <span className="italic font-normal text-[#FF684D] dark:text-[#FFB93F]">
                 Organized by Thought.
               </span>
             </h2>
           </div>
 
           <div className="flex items-center gap-4 shrink-0">
-            <div className="hidden sm:flex flex-col text-right font-mono text-[11px] text-[#767C9D] dark:text-[#A4AAC7] uppercase tracking-wider pr-4 border-r border-[#191A2B]/15 dark:border-white/15">
+            <div className="hidden sm:flex flex-col text-right font-mono text-[11px] text-[#767C9D] dark:text-[#C8BCAA] uppercase tracking-wider pr-4 border-r border-[#191A2B]/15 dark:border-amber-200/15">
               <span>INDEX TOTAL</span>
               <span className="font-bold text-[#191A2B] dark:text-[#F7F3EC]">
                 {MEMORIES.length} CURATED ENTRIES
@@ -302,10 +321,10 @@ export function MemoryArchiveSection() {
         </div>
 
         {/* Modern Topic Index Bar */}
-        <div className="mb-10 pb-4 border-b border-[#191A2B]/10 dark:border-white/10">
+        <div className="mb-10 pb-4 border-b border-[#191A2B]/10 dark:border-amber-200/10">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div className="flex items-center gap-2 flex-wrap">
-              <div className="flex items-center gap-1.5 font-mono text-xs text-[#767C9D] dark:text-[#A4AAC7] uppercase tracking-wider mr-2 font-bold">
+              <div className="flex items-center gap-1.5 font-mono text-xs text-[#767C9D] dark:text-[#C8BCAA] uppercase tracking-wider mr-2 font-bold">
                 <FilterIcon size={13} />
                 <span>TAXONOMY:</span>
               </div>
@@ -320,10 +339,10 @@ export function MemoryArchiveSection() {
                     key={tag}
                     type="button"
                     onClick={() => setSelectedTag(tag)}
-                    className={`group relative px-3.5 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                    className={`group relative px-3.5 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider cursor-pointer ${
                       isCurrent
-                        ? 'bg-[#191A2B] dark:bg-[#F7F3EC] text-[#F7F3EC] dark:text-[#191A2B] shadow-[0_4px_14px_rgba(25,26,43,0.18)] font-bold'
-                        : 'bg-white/80 dark:bg-white/5 text-[#484C69] dark:text-[#A4AAC7] hover:bg-white dark:hover:bg-white/15 border border-[#191A2B]/10 dark:border-white/10'
+                        ? 'neu-pill-active text-[#FF684D] font-bold'
+                        : 'neu-pill text-[#484C69] dark:text-[#C8BCAA] hover:text-[#191A2B] dark:hover:text-[#F7F3EC]'
                     }`}
                   >
                     <span>#{tag}</span>
@@ -333,7 +352,7 @@ export function MemoryArchiveSection() {
               })}
             </div>
 
-            <div className="font-mono text-xs text-[#767C9D] dark:text-[#A4AAC7] tracking-widest uppercase hidden lg:block">
+            <div className="font-mono text-xs text-[#767C9D] dark:text-[#C8BCAA] tracking-widest uppercase hidden lg:block">
               VIEWING ENTRY [{activeMemory.index} / 04]
             </div>
           </div>
@@ -343,7 +362,12 @@ export function MemoryArchiveSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
           {/* Left Canvas: Museum Specimen Folio Plate */}
           <div ref={featuredRef} className="lg:col-span-7 will-change-transform">
-            <div className="relative rounded-2xl bg-white dark:bg-[#1A1C2E] border border-[#191A2B]/15 dark:border-white/15 p-6 sm:p-10 shadow-[0_20px_50px_rgba(25,26,43,0.08)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.7)] overflow-hidden">
+            <NeumorphicCard
+              tilt
+              spotlight
+              data-cursor="FOLIO"
+              className="rounded-2xl p-6 sm:p-10"
+            >
               {/* Museum Specimen Corner Crosses */}
               <span className="absolute top-3 left-3 font-mono text-xs text-[#FF684D] opacity-60 pointer-events-none">
                 +
@@ -359,7 +383,7 @@ export function MemoryArchiveSection() {
               </span>
 
               {/* Top Archival Header Bar */}
-              <div className="flex items-center justify-between pb-4 border-b border-[#191A2B]/10 dark:border-white/10 mb-6 font-mono text-xs text-[#767C9D] dark:text-[#A4AAC7]">
+              <div className="flex items-center justify-between pb-4 border-b border-[#191A2B]/10 dark:border-amber-200/10 mb-6 font-mono text-xs text-[#767C9D] dark:text-[#C8BCAA]">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#FF684D] animate-pulse" />
                   <span className="text-[#FF684D] font-bold tracking-widest">
@@ -367,36 +391,39 @@ export function MemoryArchiveSection() {
                   </span>
                   <span className="hidden sm:inline">· ARCHIVAL PROOF</span>
                 </div>
-                <div className="tracking-widest uppercase text-[#FFB93F] font-semibold">
+                <div className="tracking-widest uppercase text-[#C47A0D] dark:text-[#FFB93F] font-semibold">
                   {activeMemory.date}
                 </div>
               </div>
 
-              {/* Photographic Plate with Frame Overlay */}
-              <div
-                ref={imageFrameRef}
-                className="relative aspect-[16/10] rounded-xl overflow-hidden mb-8 bg-[#090A11] border border-black/10 dark:border-white/10 shadow-inner group"
-              >
-                <Image
-                  src={activeMemory.image}
-                  alt={activeMemory.title}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 700px"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
+              {/* Photographic Plate with Recessed Neumorphic Well */}
+              <div className="neu-well p-2 rounded-2xl mb-8">
+                <div
+                  ref={imageFrameRef}
+                  className="relative aspect-[16/10] rounded-xl overflow-hidden bg-[#0E0C09] group"
+                >
+                  <Image
+                    src={activeMemory.image}
+                    alt={activeMemory.title}
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 700px"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    style={{ filter: 'sepia(0.12) contrast(1.03)' }}
+                  />
 
-                {/* Subtle Photographic Grain & Corner Framing */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                  {/* Subtle Photographic Grain & Corner Framing */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
-                {/* Floating Plate Accession Watermark */}
-                <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between font-mono text-[10px] text-white/90 uppercase tracking-widest">
-                  <span className="px-2.5 py-1 rounded-sm bg-black/70 backdrop-blur-md border border-white/20">
-                    35MM ANALOG HALIDE · SAFE ARCHIVE
-                  </span>
-                  <span className="hidden sm:inline text-white/70">
-                    LAT 35°41&apos;N · PROOF VERIFIED
-                  </span>
+                  {/* Floating Plate Accession Watermark */}
+                  <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between font-mono text-[10px] text-white/90 uppercase tracking-widest">
+                    <span className="px-2.5 py-1 rounded-sm bg-black/70 backdrop-blur-md border border-white/20">
+                      35MM ANALOG HALIDE · SAFE ARCHIVE
+                    </span>
+                    <span className="hidden sm:inline text-white/70">
+                      LAT 35°41&apos;N · PROOF VERIFIED
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -407,7 +434,7 @@ export function MemoryArchiveSection() {
                   {activeMemory.tags.map((t) => (
                     <span
                       key={t}
-                      className="px-2.5 py-1 rounded-md bg-[#191A2B]/5 dark:bg-white/10 font-mono text-[11px] text-[#FF684D] uppercase tracking-wider font-semibold border border-[#191A2B]/10 dark:border-white/10"
+                      className="neu-well px-2.5 py-1 rounded-md font-mono text-[11px] text-[#FF684D] uppercase tracking-wider font-semibold"
                     >
                       #{t}
                     </span>
@@ -420,12 +447,12 @@ export function MemoryArchiveSection() {
                 </h3>
 
                 {/* Full Archival Inscription Note */}
-                <blockquote className="relative pl-5 border-l-2 border-[#FF684D] my-4 py-1 font-serif text-base sm:text-lg text-[#484C69] dark:text-[#C5CADB] leading-relaxed italic">
+                <blockquote className="neu-well relative px-5 py-4 rounded-xl border-l-2 border-l-[#FF684D] my-4 font-serif text-base sm:text-lg text-[#484C69] dark:text-[#C5CADB] leading-relaxed italic">
                   &ldquo;{activeMemory.fullNote}&rdquo;
                 </blockquote>
 
                 {/* Bottom Specimen Verification Footnote */}
-                <div className="pt-4 border-t border-[#191A2B]/10 dark:border-white/10 flex items-center justify-between font-mono text-[11px] text-[#767C9D] dark:text-[#A4AAC7] uppercase tracking-wider">
+                <div className="pt-4 border-t border-[#191A2B]/10 dark:border-amber-200/10 flex items-center justify-between font-mono text-[11px] text-[#767C9D] dark:text-[#C8BCAA] uppercase tracking-wider">
                   <span className="flex items-center gap-1.5">
                     <SparklesIcon size={12} className="text-[#39BFAE]" />
                     <span>PERMANENT VAULT ENCRYPTION VERIFIED</span>
@@ -433,17 +460,17 @@ export function MemoryArchiveSection() {
                   <span>ECHOES № {activeMemory.index}</span>
                 </div>
               </div>
-            </div>
+            </NeumorphicCard>
           </div>
 
           {/* Right Column: Modern Interactive Awwwards Ledger */}
           <div className="lg:col-span-5 flex flex-col justify-between h-full">
             <div>
-              <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#191A2B]/10 dark:border-white/10">
+              <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#191A2B]/10 dark:border-amber-200/10">
                 <span className="font-mono text-xs uppercase tracking-widest text-[#FF684D] font-bold">
                   COLLECTION LEDGER
                 </span>
-                <span className="font-mono text-xs text-[#767C9D] dark:text-[#A4AAC7]">
+                <span className="font-mono text-xs text-[#767C9D] dark:text-[#C8BCAA]">
                   {filteredMemories.length} DEPOSITS IN VIEW
                 </span>
               </div>
@@ -456,11 +483,12 @@ export function MemoryArchiveSection() {
                     <button
                       key={mem.id}
                       type="button"
+                      data-cursor="READ"
                       onClick={() => handleSelectMemory(mem)}
-                      className={`group relative w-full text-left p-4 sm:p-5 rounded-xl border transition-all duration-300 flex items-start gap-4 cursor-pointer overflow-hidden ${
+                      className={`group relative w-full text-left p-4 sm:p-5 rounded-2xl transition-all duration-300 flex items-start gap-4 cursor-pointer overflow-hidden ${
                         isSelected
-                          ? 'bg-white dark:bg-[#1A1C2E] border-[#FF684D] shadow-[0_12px_28px_rgba(255,104,77,0.14)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.5)] ring-1 ring-[#FF684D]'
-                          : 'bg-white/60 dark:bg-white/5 border-[#191A2B]/10 dark:border-white/10 hover:bg-white dark:hover:bg-white/15 hover:border-[#191A2B]/20 hover:translate-x-1.5'
+                          ? 'neu-well ring-1 ring-[#FF684D]/70'
+                          : 'neu-card hover:-translate-y-0.5 hover:translate-x-1'
                       }`}
                     >
                       {/* Active Indicator Accent Strip */}
@@ -469,12 +497,12 @@ export function MemoryArchiveSection() {
                       )}
 
                       {/* Monospace Entry Index Number */}
-                      <div className="shrink-0 font-mono text-sm sm:text-base font-bold text-[#767C9D] dark:text-[#A4AAC7] group-hover:text-[#FF684D] transition-colors pt-0.5">
+                      <div className="shrink-0 font-mono text-sm sm:text-base font-bold text-[#767C9D] dark:text-[#C8BCAA] group-hover:text-[#FF684D] transition-colors pt-0.5">
                         {mem.index}
                       </div>
 
                       {/* Small Thumbnail Plate */}
-                      <div className="relative w-16 h-16 sm:w-18 sm:h-18 rounded-lg overflow-hidden shrink-0 bg-[#090A11] border border-black/10 dark:border-white/10">
+                      <div className="relative w-16 h-16 sm:w-18 sm:h-18 rounded-lg overflow-hidden shrink-0 bg-[#0E0C09] border border-black/10 dark:border-amber-200/10">
                         <Image
                           src={mem.image}
                           alt={mem.title}
@@ -490,7 +518,7 @@ export function MemoryArchiveSection() {
                           <span className="font-mono text-[10px] text-[#FF684D] uppercase tracking-wider font-semibold">
                             {mem.date}
                           </span>
-                          <span className="font-mono text-[9px] text-[#767C9D] dark:text-[#A4AAC7] uppercase tracking-wider">
+                          <span className="font-mono text-[9px] text-[#767C9D] dark:text-[#C8BCAA] uppercase tracking-wider">
                             {mem.plateCode}
                           </span>
                         </div>
@@ -505,7 +533,7 @@ export function MemoryArchiveSection() {
                           {mem.title}
                         </h4>
 
-                        <p className="font-sans text-xs text-[#767C9D] dark:text-[#A4AAC7] line-clamp-1 mt-1 font-light leading-relaxed">
+                        <p className="font-sans text-xs text-[#767C9D] dark:text-[#C8BCAA] line-clamp-1 mt-1 font-light leading-relaxed">
                           {mem.excerpt}
                         </p>
                       </div>
@@ -521,7 +549,7 @@ export function MemoryArchiveSection() {
             </div>
 
             {/* Bottom Archival Dossier Note */}
-            <div className="mt-8 p-5 rounded-xl bg-white/70 dark:bg-white/5 border border-[#191A2B]/10 dark:border-white/10 font-mono text-xs text-[#484C69] dark:text-[#A4AAC7] leading-relaxed">
+            <div className="neu-well mt-8 p-5 rounded-2xl font-mono text-xs text-[#484C69] dark:text-[#C8BCAA] leading-relaxed">
               <div className="flex items-center gap-2 text-[#FF684D] uppercase tracking-wider font-bold mb-2">
                 <SparklesIcon size={13} />
                 <span>ARCHIVAL CURATION GUARANTEE</span>

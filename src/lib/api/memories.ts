@@ -91,15 +91,20 @@ export const memoriesApi = {
       formData.append('caption', caption);
     }
 
-    const res = await apiClient.upload<ApiResponse<{ photo: MemoryPhoto }>>(
+    const res = await apiClient.upload<ApiResponse<MemoryPhoto | { photo: MemoryPhoto }>>(
       `/api/memories/${memoryId}/photos`,
       formData
     );
 
-    if (!res.data?.photo) {
+    const photo =
+      res.data && 'photo' in res.data && res.data.photo
+        ? res.data.photo
+        : (res.data as MemoryPhoto | undefined);
+
+    if (!photo || !photo._id) {
       throw new Error('Failed to upload photograph');
     }
-    return res.data.photo;
+    return photo;
   },
 
   /**

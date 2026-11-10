@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { FloatingSticker } from '@/components/ui/FloatingSticker';
-import { ArrowRightIcon, AlertCircleIcon, CheckIcon } from '@/components/icons/Icons';
+import { ArrowRightIcon, AlertCircleIcon, CheckIcon, CloseIcon } from '@/components/icons/Icons';
 
 function RegisterForm() {
   const router = useRouter();
@@ -39,6 +39,13 @@ function RegisterForm() {
   const hasLower = /[a-z]/.test(password);
   const hasNumber = /\d/.test(password);
   const passwordsMatch = password.length > 0 && password === confirmPassword;
+
+  const passwordRequirements = [
+    { label: '8+ Characters', met: hasMinLength },
+    { label: 'Uppercase Letter', met: hasUpper },
+    { label: 'Lowercase Letter', met: hasLower },
+    { label: 'At least one number', met: hasNumber },
+  ];
 
   const isFormValid =
     name.trim().length >= 2 &&
@@ -195,36 +202,29 @@ function RegisterForm() {
               Security Requirements:
             </span>
             <div className="grid grid-cols-2 gap-x-2 gap-y-1">
-              <div
-                className={`flex items-center gap-1.5 ${hasMinLength ? 'text-[#39BFAE]' : 'text-[#767C9D]'}`}
-              >
-                <CheckIcon size={12} className={hasMinLength ? 'opacity-100' : 'opacity-30'} />
-                <span>8+ Characters</span>
-              </div>
-              <div
-                className={`flex items-center gap-1.5 ${hasUpper ? 'text-[#39BFAE]' : 'text-[#767C9D]'}`}
-              >
-                <CheckIcon size={12} className={hasUpper ? 'opacity-100' : 'opacity-30'} />
-                <span>Uppercase Letter</span>
-              </div>
-              <div
-                className={`flex items-center gap-1.5 ${hasLower ? 'text-[#39BFAE]' : 'text-[#767C9D]'}`}
-              >
-                <CheckIcon size={12} className={hasLower ? 'opacity-100' : 'opacity-30'} />
-                <span>Lowercase Letter</span>
-              </div>
-              <div
-                className={`flex items-center gap-1.5 ${hasNumber ? 'text-[#39BFAE]' : 'text-[#767C9D]'}`}
-              >
-                <CheckIcon size={12} className={hasNumber ? 'opacity-100' : 'opacity-30'} />
-                <span>At least one number</span>
-              </div>
+              {passwordRequirements.map((req) => (
+                <div
+                  key={req.label}
+                  className={`flex items-center gap-1.5 font-medium ${
+                    req.met
+                      ? 'text-[#1F8A7E] dark:text-[#39BFAE]'
+                      : 'text-[#DC2626] dark:text-[#FF684D]'
+                  }`}
+                >
+                  {req.met ? <CheckIcon size={12} /> : <CloseIcon size={12} />}
+                  <span>{req.label}</span>
+                </div>
+              ))}
             </div>
             {confirmPassword.length > 0 && (
               <div
-                className={`flex items-center gap-1.5 pt-1 border-t border-[#191A2B]/5 dark:border-white/5 ${passwordsMatch ? 'text-[#39BFAE]' : 'text-[#FF684D]'}`}
+                className={`flex items-center gap-1.5 pt-1 border-t border-[#191A2B]/5 dark:border-white/5 font-medium ${
+                  passwordsMatch
+                    ? 'text-[#1F8A7E] dark:text-[#39BFAE]'
+                    : 'text-[#DC2626] dark:text-[#FF684D]'
+                }`}
               >
-                <CheckIcon size={12} className={passwordsMatch ? 'opacity-100' : 'opacity-30'} />
+                {passwordsMatch ? <CheckIcon size={12} /> : <CloseIcon size={12} />}
                 <span>{passwordsMatch ? 'Passwords match' : 'Passwords do not match'}</span>
               </div>
             )}

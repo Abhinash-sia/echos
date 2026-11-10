@@ -181,7 +181,64 @@ echos/
 
 ---
 
-## 5. Implemented API Endpoints (Phase 1)
+### AI Features & LLM Configuration (Ollama / Google Gemini / Groq)
+
+ECHOES includes three AI-powered features—**Timeline Chapter Summaries** (`/timeline`), **Then vs. Now Capsule Insights** (`/capsules/[id]`), and the **AI Curated Bulletin Board** (`/board`)—plus a live connection badge (`GET /api/ai/status`) in the UI.
+
+If no AI variables are set in `.env.local`, ECHOES runs in **local heuristic mode** automatically. To activate a live LLM, choose **one** of the options below in `.env.local` and restart `npm run dev`:
+
+#### Option A: Local LLM via Ollama (Free, Private, No API Key)
+
+1. Install [Ollama](https://ollama.com/) and pull a local model:
+   ```bash
+   ollama pull llama3.2:3b
+   ```
+2. Make sure the Ollama server is running:
+   ```bash
+   ollama serve
+   ```
+3. Add to `.env.local`:
+   ```env
+   AI_BASE_URL=http://127.0.0.1:11434/v1
+   AI_API_KEY=
+   AI_MODEL=llama3.2:3b
+   ```
+
+#### Option B: Google AI Studio (Gemini API Key)
+
+Google AI Studio keys work directly through Gemini's OpenAI-compatible endpoint:
+
+1. Create an API key in [Google AI Studio](https://aistudio.google.com/apikey).
+2. Add to `.env.local`:
+   ```env
+   AI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
+   AI_API_KEY=your_google_gemini_api_key
+   AI_MODEL=gemini-2.5-flash
+   ```
+
+#### Option C: Groq API Key (Fast Cloud Inference)
+
+1. Create an API key in the [Groq Console](https://console.groq.com/keys).
+2. Add to `.env.local`:
+   ```env
+   AI_BASE_URL=https://api.groq.com/openai/v1
+   AI_API_KEY=your_groq_api_key
+   AI_MODEL=llama-3.3-70b-versatile
+   ```
+
+#### Option D: OpenAI API Key
+
+```env
+AI_BASE_URL=https://api.openai.com/v1
+AI_API_KEY=your_openai_api_key
+AI_MODEL=gpt-4o-mini
+```
+
+> **Verify Connection:** After restarting `npm run dev`, open `/board` or `/timeline`—the status pill at the top will turn **green** (`Local LLM Connected` or `AI Connected`) once the endpoint and model are verified.
+
+---
+
+## 5. Implemented API Endpoints (Phase 1 & AI Extensions)
 
 | Method  | Endpoint                    | Access                 | Description                                                              |
 | :------ | :-------------------------- | :--------------------- | :----------------------------------------------------------------------- |
@@ -192,7 +249,14 @@ echos/
 | `GET`   | `/api/auth/me`              | Authenticated          | Retrieve current authenticated user profile                              |
 | `POST`  | `/api/auth/forgot-password` | Public                 | Generate crypto token hash and dispatch password reset email             |
 | `POST`  | `/api/auth/reset-password`  | Public                 | Reset password using valid unexpired token and invalidate prior sessions |
-| `PATCH` | `/api/auth/change-password` | Authenticated          | Verify current password, save new hash, invalidate other active sessions |
+| `PATCH`  | `/api/auth/change-password`     | Authenticated          | Verify current password, save new hash, invalidate other active sessions  |
+| `GET`    | `/api/ai/status`                | Authenticated          | Check live connectivity & model availability for configured LLM           |
+| `POST`   | `/api/ai/timeline-summary`      | Authenticated          | Summarize a Month/Year timeline chapter (excludes locked capsule content) |
+| `POST`   | `/api/ai/capsules/:id/insight`  | Authenticated          | Generate "Then vs. Now" comparison for an unlocked capsule                |
+| `GET`    | `/api/ai/board`                 | Authenticated          | List all saved AI bulletin boards hydrated with live items & signed URLs  |
+| `POST`   | `/api/ai/board`                 | Authenticated          | Generate an unsaved AI bulletin board draft preview (supports focus query)|
+| `PUT`    | `/api/ai/board`                 | Authenticated          | Save a generated board draft as a new or updated board                    |
+| `DELETE` | `/api/ai/board/:id`             | Authenticated          | Delete a saved AI bulletin board                                          |
 
 ---
 

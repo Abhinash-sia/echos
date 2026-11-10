@@ -1,6 +1,5 @@
 import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
 import mongoose from 'mongoose';
-import crypto from 'crypto';
 import { getEnv } from '@/lib/env';
 
 export interface CloudinaryUploadResult {
@@ -182,31 +181,28 @@ export async function deleteCloudinaryPhoto(publicId: string): Promise<boolean> 
 }
 
 /**
- * Resolves the token-signing key for Cloudinary URL authorization.
- * Prefers CLOUDINARY_AUTH_TOKEN_KEY; falls back to a deterministic SHA-256 hash of CLOUDINARY_API_SECRET.
- * Ensures the returned key is a valid hexadecimal string suitable for Cloudinary HMAC operations.
+ * Resolves the optional token-signing key for Cloudinary URL token authentication.
+ * Returns null unless a valid 32-64 character hexadecimal CLOUDINARY_AUTH_TOKEN_KEY is configured,
+ * allowing standard signed URLs (sign_url) to work on free-tier Cloudinary accounts.
  */
-export function getAuthTokenKey(): string {
+export function getAuthTokenKey(): string | null {
   const env = getEnv();
   if (env.CLOUDINARY_AUTH_TOKEN_KEY && /^[0-9a-fA-F]{32,64}$/.test(env.CLOUDINARY_AUTH_TOKEN_KEY)) {
     return env.CLOUDINARY_AUTH_TOKEN_KEY;
   }
-  const secretSource = env.CLOUDINARY_API_SECRET || 'echoes-default-token-key-fallback';
-  return crypto.createHash('sha256').update(secretSource).digest('hex');
+  return null;
 }
 
 /**
- * Generates an authenticated, time-limited URL for private photographs using Cloudinary's
- * official token-based authentication mechanism (__cld_token__).
+ * Generates an authenticated signed URL for private photographs (`type: 'authenticated'`).
  *
- * Cloudinary CDN edge nodes enforce:
- * 1. Time expiration: Requests where current_time >= exp are rejected by the CDN with HTTP 403 Forbidden.
- * 2. Signature verification: The hmac parameter is verified against the URL path using the secret token key.
- * 3. Strict privacy: Direct unsigned requests to type: 'authenticated' assets return HTTP 401/404.
+ * When CLOUDINARY_AUTH_TOKEN_KEY is configured, attaches Cloudinary's time-limited `__cld_token__`
+ * authentication parameter. Otherwise, generates a standard HMAC-signed URL (`sign_url: true`)
+ * compatible with all Cloudinary plans while keeping unsigned access blocked.
  *
  * @param publicId Cloudinary asset public ID.
- * @param options Expiration duration (defaults to 900s / 15 mins) and optional format override.
- * @returns Fully signed delivery URL containing the __cld_token__ parameter with expiration and HMAC.
+ * @param options Expiration duration (defaults to 900s / 15 mins when token auth is enabled) and optional format override.
+ * @returns Signed delivery URL for the private Cloudinary asset.
  */
 export function generateSignedPhotoUrl(
   publicId: string,
@@ -222,10 +218,14 @@ export function generateSignedPhotoUrl(
     sign_url: true,
     secure: true,
     format: options.format,
-    auth_token: {
-      key: tokenKey,
-      duration,
-    },
+    ...(tokenKey
+      ? {
+          auth_token: {
+            key: tokenKey,
+            duration,
+          },
+        }
+      : {}),
   });
 }
 

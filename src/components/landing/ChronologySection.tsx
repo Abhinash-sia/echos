@@ -14,6 +14,7 @@ import {
   SparklesIcon,
 } from '@/components/icons/Icons';
 import { gsap, isReducedMotion } from '@/lib/motion';
+import { NeumorphicCard } from '@/components/landing/NeumorphicCard';
 
 interface TimelineMilestone {
   year: string;
@@ -121,17 +122,18 @@ export function ChronologySection() {
           if (card) {
             gsap.fromTo(
               card,
-              { opacity: 0, x: isEven ? -30 : 30, y: 15 },
+              { opacity: 0.15, x: isEven ? -36 : 36, y: 18 },
               {
                 scrollTrigger: {
                   trigger: row,
-                  start: 'top 82%',
+                  start: 'top 90%',
+                  end: 'top 46%',
+                  scrub: 0.6,
                 },
                 opacity: 1,
                 x: 0,
                 y: 0,
-                duration: 0.8,
-                ease: 'power2.out',
+                ease: 'none',
               }
             );
           }
@@ -139,17 +141,18 @@ export function ChronologySection() {
           if (artifact) {
             gsap.fromTo(
               artifact,
-              { opacity: 0, scale: 0.94 },
+              { opacity: 0.15, x: isEven ? 36 : -36, scale: 0.94 },
               {
                 scrollTrigger: {
                   trigger: row,
-                  start: 'top 82%',
+                  start: 'top 90%',
+                  end: 'top 46%',
+                  scrub: 0.6,
                 },
                 opacity: 1,
+                x: 0,
                 scale: 1,
-                duration: 0.8,
-                delay: 0.1,
-                ease: 'power2.out',
+                ease: 'none',
               }
             );
 
@@ -190,8 +193,9 @@ export function ChronologySection() {
 
   return (
     <section
+      id="chronology"
       ref={sectionRef}
-      className="relative bg-[#F7F3EC] dark:bg-[#151726] text-[#191A2B] dark:text-[#F7F3EC] py-24 sm:py-36 overflow-hidden border-b border-[#191A2B]/10 dark:border-white/10 transition-colors duration-300"
+      className="film-grain relative bg-[#EDE5D0] dark:bg-[#171410] text-[#191A2B] dark:text-[#F7F3EC] py-24 sm:py-36 overflow-hidden border-b border-[#191A2B]/10 dark:border-amber-200/10 transition-colors duration-300"
     >
       <Container size="wide" className="relative z-10">
         {/* Section Header */}
@@ -203,7 +207,7 @@ export function ChronologySection() {
             </div>
             <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-[#191A2B] dark:text-[#F7F3EC] tracking-tight leading-tight">
               A Serpentine River.{' '}
-              <span className="italic font-normal text-[#4F66E8] dark:text-[#39BFAE]">
+              <span className="italic font-normal text-[#4F66E8] dark:text-[#FFB93F]">
                 Weaving Through Time.
               </span>
             </h2>
@@ -258,17 +262,21 @@ export function ChronologySection() {
                 >
                   {/* Text Milestone Card */}
                   <div className="w-full lg:w-5/12">
-                    <div className="milestone-card rounded-2xl bg-white dark:bg-[#1E2135] p-6 sm:p-8 border border-[#191A2B]/10 dark:border-white/10 shadow-[0_8px_24px_rgba(25,26,43,0.04)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.5)] hover:-translate-y-1 transition-all duration-300 will-change-transform">
-                      <div className="flex items-center justify-between pb-3 border-b border-[#191A2B]/10 dark:border-white/10 mb-4">
+                    <NeumorphicCard
+                      tilt
+                      spotlight
+                      className="milestone-card rounded-2xl p-6 sm:p-8 hover:-translate-y-1 will-change-transform"
+                    >
+                      <div className="flex items-center justify-between pb-3 border-b border-[#191A2B]/10 dark:border-amber-200/10 mb-4">
                         <span className="font-mono text-xs font-bold text-[#FF684D] tracking-wider uppercase">
                           {item.year}
                         </span>
-                        <span className="p-1.5 rounded-lg bg-[#191A2B]/5 dark:bg-white/10 text-[#191A2B] dark:text-[#F7F3EC]">
+                        <span className="neu-well p-2 rounded-xl text-[#191A2B] dark:text-[#F7F3EC]">
                           {item.icon}
                         </span>
                       </div>
 
-                      <div className="font-mono text-[10px] text-[#767C9D] dark:text-[#A4AAC7] uppercase tracking-widest mb-1">
+                      <div className="font-mono text-[10px] text-[#767C9D] dark:text-[#C8BCAA] uppercase tracking-widest mb-1">
                         {item.badge}
                       </div>
 
@@ -276,36 +284,42 @@ export function ChronologySection() {
                         {item.title}
                       </h3>
 
-                      <p className="font-sans text-sm text-[#484C69] dark:text-[#A4AAC7] leading-relaxed font-light">
+                      <p className="font-sans text-sm text-[#484C69] dark:text-[#C8BCAA] leading-relaxed font-light">
                         {item.description}
                       </p>
-                    </div>
+                    </NeumorphicCard>
                   </div>
 
                   {/* Desktop Middle Node Disc */}
                   <div className="hidden lg:flex w-2/12 justify-center items-center">
-                    <div className="milestone-node w-10 h-10 rounded-full bg-[#191A2B] dark:bg-[#39BFAE] border-2 border-white dark:border-[#191A2B] shadow-md flex items-center justify-center text-white dark:text-[#191A2B] text-xs font-mono font-bold will-change-transform">
+                    <div className="milestone-node neu-card w-11 h-11 rounded-full flex items-center justify-center text-[#FF684D] text-xs font-mono font-bold will-change-transform">
                       0{index + 1}
                     </div>
                   </div>
 
                   {/* Opposite Column: Archival Photographic Artifact (No Empty Space) */}
                   <div className="w-full lg:w-5/12">
-                    <div className="milestone-artifact rounded-2xl bg-white/70 dark:bg-[#1E2135]/60 p-3 sm:p-4 border border-[#191A2B]/10 dark:border-white/10 shadow-[0_6px_20px_rgba(25,26,43,0.03)] dark:shadow-md will-change-transform">
-                      <div className="relative aspect-[16/9] rounded-xl overflow-hidden bg-black/10 mb-3">
-                        <Image
-                          src={item.artifactImage}
-                          alt={item.artifactCaption}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 400px"
-                          className="object-cover"
-                        />
+                    <NeumorphicCard
+                      spotlight
+                      className="milestone-artifact rounded-2xl p-3.5 sm:p-4 will-change-transform"
+                    >
+                      <div className="neu-well p-1.5 rounded-xl mb-3">
+                        <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-black/10">
+                          <Image
+                            src={item.artifactImage}
+                            alt={item.artifactCaption}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 400px"
+                            className="object-cover"
+                            style={{ filter: 'sepia(0.14) contrast(1.03)' }}
+                          />
+                        </div>
                       </div>
-                      <div className="flex items-center justify-between font-mono text-[10px] text-[#767C9D] dark:text-[#A4AAC7] uppercase tracking-wider">
+                      <div className="px-1 flex items-center justify-between font-mono text-[10px] text-[#767C9D] dark:text-[#C8BCAA] uppercase tracking-wider">
                         <span>{item.artifactCaption}</span>
-                        <span className="text-[#FF684D]">ARCHIVAL PLATE</span>
+                        <span className="text-[#FF684D] font-semibold">ARCHIVAL PLATE</span>
                       </div>
-                    </div>
+                    </NeumorphicCard>
                   </div>
                 </div>
               );

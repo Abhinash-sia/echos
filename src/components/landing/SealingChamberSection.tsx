@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Container } from '@/components/layout/Container';
 import { Button } from '@/components/ui/Button';
 import { LockIcon, ArrowRightIcon, CheckIcon } from '@/components/icons/Icons';
+import { NeumorphicCard } from '@/components/landing/NeumorphicCard';
 import { gsap, isReducedMotion } from '@/lib/motion';
 
 interface MilestoneOption {
@@ -75,15 +76,15 @@ export function SealingChamberSection() {
         ease: 'none',
       });
 
-      // Scroll-driven astrolabe podium subtle float
+      // Scroll-driven astrolabe podium float (keeps central EPOCH disc upright)
       gsap.to(dialPodiumRef.current, {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top bottom',
           end: 'bottom top',
-          scrub: 1.2,
+          scrub: 1.0,
         },
-        yPercent: -6,
+        yPercent: -7,
         ease: 'none',
       });
     }, sectionRef);
@@ -149,10 +150,10 @@ export function SealingChamberSection() {
     <section
       ref={sectionRef}
       id="chamber"
-      className="relative bg-[#FAF5EC] dark:bg-[#0A0B13] text-[#191A2B] dark:text-[#F7F3EC] py-24 sm:py-36 overflow-hidden border-b border-[#191A2B]/10 dark:border-white/10 transition-colors duration-300"
+      className="film-grain relative bg-[#E7DEC8] dark:bg-[#12100D] text-[#191A2B] dark:text-[#F7F3EC] py-24 sm:py-36 overflow-hidden border-b border-[#191A2B]/10 dark:border-amber-200/10 transition-colors duration-300"
     >
       {/* Background Radial Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[#39BFAE]/10 dark:bg-[#39BFAE]/15 blur-[160px] pointer-events-none rounded-full" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[#FFB93F]/10 dark:bg-[#FFB93F]/10 blur-[160px] pointer-events-none rounded-full" />
 
       <Container size="wide" className="relative z-10">
         {/* Section Header */}
@@ -165,7 +166,7 @@ export function SealingChamberSection() {
             Cryptographic Sealing.{' '}
             <span className="italic font-normal text-[#FF684D]">Letters Across Time.</span>
           </h2>
-          <p className="font-sans text-base sm:text-lg text-[#484C69] dark:text-[#A4AAC7] leading-relaxed mt-4 font-light">
+          <p className="font-sans text-base sm:text-lg text-[#484C69] dark:text-[#C8BCAA] leading-relaxed mt-4 font-light">
             A time capsule is a solemn pact with the future. You deposit your letters, calibrate the
             astronomical dial, and pour digital molten wax. The vault enforces strict mathematical
             lockout until the designated year arrives.
@@ -178,16 +179,18 @@ export function SealingChamberSection() {
           <div className="lg:col-span-6 flex justify-center">
             <div
               ref={dialPodiumRef}
-              className="relative w-72 sm:w-96 aspect-square rounded-full bg-white/80 dark:bg-[#141524] p-4 sm:p-6 border border-[#191A2B]/10 dark:border-[#39BFAE]/30 shadow-[0_20px_50px_rgba(25,26,43,0.08)] dark:shadow-[0_0_60px_rgba(57,191,174,0.15)] flex items-center justify-center will-change-transform"
+              className="neu-card relative w-72 sm:w-96 aspect-square rounded-full p-5 sm:p-7 flex items-center justify-center will-change-transform"
             >
-              {/* Rotating Astrolabe SVG */}
-              <div ref={astrolabeRef} className="relative w-full h-full will-change-transform">
-                <Image
-                  src="/images/illustrations/dial_temporal_astrolabe.svg"
-                  alt="Antique mechanical astrolabe temporal dial"
-                  fill
-                  className="object-contain"
-                />
+              <div className="neu-well relative w-full h-full rounded-full p-3 flex items-center justify-center">
+                {/* Rotating Astrolabe SVG */}
+                <div ref={astrolabeRef} className="relative w-full h-full will-change-transform">
+                  <Image
+                    src="/images/illustrations/dial_temporal_astrolabe.svg"
+                    alt="Antique mechanical astrolabe temporal dial"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               </div>
 
               {/* Kinetic Needle */}
@@ -205,7 +208,7 @@ export function SealingChamberSection() {
               {/* Central Year Disc */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="w-20 h-20 rounded-full bg-[#191A2B] text-white border border-[#F7D84B]/40 flex flex-col items-center justify-center text-center p-2 shadow-2xl">
-                  <span className="font-mono text-[9px] text-[#A4AAC7] uppercase">EPOCH</span>
+                  <span className="font-mono text-[9px] text-[#C8BCAA] uppercase">EPOCH</span>
                   <span
                     ref={yearTextRef}
                     className="font-serif text-xl text-[#F7D84B] font-bold will-change-transform"
@@ -226,29 +229,30 @@ export function SealingChamberSection() {
 
           {/* Right Column: Ceremonial Parchment Dossier */}
           <div className="lg:col-span-6">
-            <div className="rounded-2xl bg-white dark:bg-[#141524] border border-[#191A2B]/10 dark:border-white/10 p-6 sm:p-10 shadow-[0_16px_40px_rgba(25,26,43,0.06)] dark:shadow-2xl">
-              <div className="flex items-center justify-between pb-4 border-b border-[#191A2B]/10 dark:border-white/10 mb-6">
+            <NeumorphicCard spotlight className="rounded-2xl p-6 sm:p-10">
+              <div className="flex items-center justify-between pb-4 border-b border-[#191A2B]/10 dark:border-amber-200/10 mb-6">
                 <span className="font-mono text-xs uppercase tracking-widest text-[#FF684D] font-bold">
                   CALIBRATE TEMPORAL HORIZON
                 </span>
-                <span className="font-mono text-xs text-[#767C9D] dark:text-[#A4AAC7]">
+                <span className="font-mono text-xs text-[#767C9D] dark:text-[#C8BCAA]">
                   {selectedMilestone.duration} LOCKED
                 </span>
               </div>
 
               {/* Tactile Milestone Horizon Selectors */}
-              <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="grid grid-cols-2 gap-3.5 mb-6">
                 {MILESTONES.map((item) => {
                   const isCurrent = selectedMilestone.year === item.year;
                   return (
                     <button
                       key={item.year}
                       type="button"
+                      data-cursor="DIAL"
                       onClick={() => handleSelectMilestone(item)}
-                      className={`p-3.5 rounded-xl border text-left transition-all duration-200 ${
+                      className={`p-3.5 rounded-xl text-left cursor-pointer ${
                         isCurrent
-                          ? 'border-[#FF684D] bg-[#FF684D]/10 text-[#191A2B] dark:text-white ring-1 ring-[#FF684D] scale-[1.02]'
-                          : 'border-[#191A2B]/10 dark:border-white/10 bg-[#191A2B]/5 dark:bg-white/5 text-[#484C69] dark:text-[#A4AAC7] hover:bg-[#191A2B]/10 dark:hover:bg-white/10'
+                          ? 'neu-pill-active text-[#191A2B] dark:text-white ring-1 ring-[#FF684D]/70'
+                          : 'neu-pill text-[#484C69] dark:text-[#C8BCAA]'
                       }`}
                     >
                       <div className="font-serif text-lg text-[#191A2B] dark:text-[#F7F3EC] font-medium">
@@ -263,8 +267,8 @@ export function SealingChamberSection() {
               </div>
 
               {/* Milestone Reflection Quote */}
-              <div className="p-4 rounded-xl bg-[#191A2B]/5 dark:bg-black/40 border border-[#191A2B]/10 dark:border-white/5 mb-8">
-                <p className="font-serif text-sm text-[#484C69] dark:text-[#A4AAC7] leading-relaxed italic">
+              <div className="neu-well p-4 rounded-xl mb-8">
+                <p className="font-serif text-sm text-[#484C69] dark:text-[#C8BCAA] leading-relaxed italic">
                   &ldquo;{selectedMilestone.description}&rdquo;
                 </p>
               </div>
@@ -300,7 +304,7 @@ export function SealingChamberSection() {
               {sealSuccess && (
                 <div
                   ref={sealStampRef}
-                  className="mt-6 p-4 rounded-xl bg-[#39BFAE]/10 border border-[#39BFAE]/30 flex items-center gap-4 will-change-transform"
+                  className="neu-well mt-6 p-4 rounded-xl border border-[#39BFAE]/35 flex items-center gap-4 will-change-transform"
                 >
                   <div className="relative w-12 h-12 shrink-0">
                     <Image
@@ -311,17 +315,17 @@ export function SealingChamberSection() {
                     />
                   </div>
                   <div>
-                    <div className="font-serif text-sm font-semibold text-[#39BFAE]">
+                    <div className="font-serif text-sm font-semibold text-[#1F8A7E] dark:text-[#FFB93F]">
                       SEAL APPLIED UNDER VAULT PROTOCOL
                     </div>
-                    <div className="font-mono text-[11px] text-[#484C69] dark:text-[#A4AAC7]">
+                    <div className="font-mono text-[11px] text-[#484C69] dark:text-[#C8BCAA]">
                       Locked until January 1, {selectedMilestone.year}. Zero-knowledge server
                       protection active.
                     </div>
                   </div>
                 </div>
               )}
-            </div>
+            </NeumorphicCard>
           </div>
         </div>
       </Container>

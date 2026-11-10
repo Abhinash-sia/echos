@@ -14,11 +14,11 @@ import { PhotoLightbox } from '@/components/ui/PhotoLightbox';
 import { ArchivalStamp } from '@/components/ui/ArchivalStamp';
 import { CalendarIcon, CameraIcon, AlertCircleIcon } from '@/components/icons/Icons';
 
-function MemoryDetailContent({ params }: { params: Promise<{ id: string }> | { id: string } }) {
+function MemoryDetailContent({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const toast = useToast();
-  // Unwrap Next.js 16 dynamic route params safely
-  const resolvedParams = use(Promise.resolve(params));
+  // Unwrap Next.js 16 dynamic route params directly without creating an uncached Promise
+  const resolvedParams = use(params);
   const memoryId = resolvedParams.id;
 
   // Data State
@@ -526,7 +526,7 @@ function MemoryDetailContent({ params }: { params: Promise<{ id: string }> | { i
 export default function MemoryDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }> | { id: string };
+  params: Promise<{ id: string }>;
 }) {
   return (
     <React.Suspense
