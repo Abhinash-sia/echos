@@ -141,7 +141,13 @@ export async function checkAiProviderStatus(): Promise<AiProviderStatus> {
 
     const modelAvailable =
       availableModels.length === 0 ||
-      availableModels.some((id) => id === model || id.startsWith(`${model}:`));
+      availableModels.some(
+        (id) =>
+          id === model ||
+          id.startsWith(`${model}:`) ||
+          id === `models/${model}` ||
+          id.endsWith(`/${model}`)
+      );
 
     return {
       configured: true,
