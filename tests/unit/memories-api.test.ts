@@ -181,6 +181,31 @@ describe('Memories API Client & Photo Management', () => {
     expect(capturedBody).toBeInstanceOf(FormData);
   });
 
+  it('uploadPhoto supports direct MemoryPhoto payload returned by /api/memories/[id]/photos', async () => {
+    global.fetch = vi.fn().mockImplementation(() => {
+      return Promise.resolve(
+        new Response(
+          JSON.stringify({
+            success: true,
+            data: {
+              _id: 'photo_direct_1',
+              publicId: 'echoes/photos/direct_photo',
+              signedUrl: 'https://res.cloudinary.com/signed/direct.jpg',
+            },
+          }),
+          { status: 201, headers: { 'Content-Type': 'application/json' } }
+        )
+      );
+    });
+
+    const dummyFile = new File(['fake image bytes'], 'direct.jpg', { type: 'image/jpeg' });
+    const photo = await memoriesApi.uploadPhoto('507f1f77bcf86cd799439022', dummyFile);
+
+    expect(photo._id).toBe('photo_direct_1');
+    expect(photo.publicId).toBe('echoes/photos/direct_photo');
+    expect(photo.signedUrl).toContain('cloudinary.com');
+  });
+
   it('deletePhoto sends DELETE to memory photo sub-resource', async () => {
     let capturedUrl = '';
     let capturedMethod = '';

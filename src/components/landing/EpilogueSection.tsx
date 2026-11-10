@@ -128,7 +128,7 @@ export function EpilogueSection() {
   return (
     <footer
       ref={sectionRef}
-      className="relative bg-[#191A2B] dark:bg-[#08090E] text-[#F7F3EC] pt-24 sm:pt-36 pb-16 overflow-hidden transition-colors duration-300"
+      className="film-grain relative bg-[#171410] dark:bg-[#0E0C09] text-[#F7F3EC] pt-24 sm:pt-36 pb-16 overflow-hidden transition-colors duration-300"
     >
       {/* Background Celestial Radial Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#FF684D]/15 blur-[160px] pointer-events-none rounded-full" />
@@ -172,7 +172,7 @@ export function EpilogueSection() {
             </span>
           </h2>
 
-          <p className="font-sans text-base sm:text-lg text-[#A4AAC7] leading-relaxed max-w-2xl mx-auto mb-10 font-light">
+          <p className="font-sans text-base sm:text-lg text-[#C8BCAA] leading-relaxed max-w-2xl mx-auto mb-10 font-light">
             No audience of strangers. No vanishing feeds. Just the quiet sanctuary of your personal
             history, sealed and preserved for decades to come.
           </p>
@@ -220,7 +220,7 @@ export function EpilogueSection() {
                 残響 · DIGITAL MEMORY VAULT & TIME CAPSULE
               </span>
             </Link>
-            <p className="font-sans text-sm text-[#767C9D] dark:text-[#A4AAC7] leading-relaxed max-w-sm mt-3 font-light">
+            <p className="font-sans text-sm text-[#767C9D] dark:text-[#C8BCAA] leading-relaxed max-w-sm mt-3 font-light">
               An experimental editorial archive built for the preservation of human reflection, 35mm
               photographic memories, and sealed correspondence across epochs.
             </p>
@@ -231,7 +231,7 @@ export function EpilogueSection() {
             <div className="font-mono text-xs uppercase tracking-widest text-[#FF684D] mb-4 font-bold">
               THE ARCHIVE
             </div>
-            <ul className="space-y-2.5 font-sans text-sm text-[#A4AAC7]">
+            <ul className="space-y-2.5 font-sans text-sm text-[#C8BCAA]">
               <li>
                 <Link href="/memories" className="hover:text-white transition-colors">
                   Memory Journal
@@ -260,7 +260,7 @@ export function EpilogueSection() {
             <div className="font-mono text-xs uppercase tracking-widest text-[#39BFAE] mb-4 font-bold">
               FOUNDATIONS
             </div>
-            <ul className="space-y-2.5 font-sans text-sm text-[#A4AAC7]">
+            <ul className="space-y-2.5 font-sans text-sm text-[#C8BCAA]">
               <li>
                 <Link href="/showcase" className="hover:text-white transition-colors">
                   Design Showcase
@@ -289,7 +289,7 @@ export function EpilogueSection() {
             <div className="font-mono text-xs uppercase tracking-widest text-[#F7D84B] mb-4 font-bold">
               PRESERVATION PLEDGE
             </div>
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10 font-sans text-xs text-[#A4AAC7] leading-relaxed">
+            <div className="neu-darkroom-card p-4 rounded-xl font-sans text-xs text-[#C8BCAA] leading-relaxed">
               <div className="flex items-center gap-2 text-[#39BFAE] font-mono uppercase tracking-wider mb-2 font-semibold">
                 <LockIcon size={12} />
                 <span>CRYPTOGRAPHIC PURITY</span>

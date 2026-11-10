@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Container } from '@/components/layout/Container';
 import { CameraIcon, SparklesIcon, ArrowRightIcon } from '@/components/icons/Icons';
+import { NeumorphicCard } from '@/components/landing/NeumorphicCard';
 import { gsap, isReducedMotion } from '@/lib/motion';
 
 interface FilmFrame {
@@ -71,6 +72,8 @@ export function ContactSheetSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const filmstripRef = useRef<HTMLDivElement>(null);
   const framesContainerRef = useRef<HTMLDivElement>(null);
+  const topSprocketRef = useRef<HTMLDivElement>(null);
+  const bottomSprocketRef = useRef<HTMLDivElement>(null);
   const loupeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -94,34 +97,94 @@ export function ContactSheetSection() {
         }
       );
 
-      gsap.to(filmstripRef.current, {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1.2,
-        },
-        yPercent: -4,
-        ease: 'none',
-      });
+      gsap.fromTo(
+        filmstripRef.current,
+        { scale: 0.94, yPercent: 4 },
+        {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'center center',
+            scrub: 0.9,
+          },
+          scale: 1,
+          yPercent: -2,
+          ease: 'none',
+        }
+      );
 
-      // 2. Sequential Reveal of Film Frames
-      if (framesContainerRef.current) {
+      // Lateral film-advance scrub on sprockets as user scrolls through section
+      if (topSprocketRef.current) {
         gsap.fromTo(
-          framesContainerRef.current.children,
-          { opacity: 0, y: 28 },
+          topSprocketRef.current,
+          { xPercent: -8 },
+          {
+            xPercent: 8,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 0.6,
+            },
+          }
+        );
+      }
+
+      if (bottomSprocketRef.current) {
+        gsap.fromTo(
+          bottomSprocketRef.current,
+          { xPercent: 8 },
+          {
+            xPercent: -8,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 0.6,
+            },
+          }
+        );
+      }
+
+      // 2. Sequential Reveal of Film Frames + Curtain Unveil on Apertures
+      if (framesContainerRef.current) {
+        const cards = framesContainerRef.current.children;
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 32, scale: 0.96 },
           {
             scrollTrigger: {
               trigger: framesContainerRef.current,
-              start: 'top 80%',
+              start: 'top 82%',
             },
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            stagger: 0.18,
-            ease: 'back.out(1.2)',
+            scale: 1,
+            duration: 0.85,
+            stagger: 0.14,
+            ease: 'power3.out',
           }
         );
+
+        const apertures = framesContainerRef.current.querySelectorAll('.contact-aperture');
+        if (apertures.length > 0) {
+          gsap.fromTo(
+            apertures,
+            { clipPath: 'inset(12% 4% 12% 4% round 8px)' },
+            {
+              clipPath: 'inset(0% 0% 0% 0% round 8px)',
+              duration: 0.9,
+              stagger: 0.14,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: framesContainerRef.current,
+                start: 'top 80%',
+              },
+            }
+          );
+        }
       }
     }, sectionRef);
 
@@ -134,8 +197,8 @@ export function ContactSheetSection() {
     if (!isReducedMotion() && loupeRef.current) {
       gsap.fromTo(
         loupeRef.current,
-        { opacity: 0.5, y: 8 },
-        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }
+        { opacity: 0.55, y: 10, scale: 0.985 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'power3.out', overwrite: 'auto' }
       );
     }
   };
@@ -144,7 +207,7 @@ export function ContactSheetSection() {
     <section
       ref={sectionRef}
       id="contact-sheet"
-      className="relative bg-[#EFE8DD] dark:bg-[#0B0C14] text-[#191A2B] dark:text-[#F7F3EC] py-28 sm:py-36 overflow-hidden border-b border-[#191A2B]/10 dark:border-white/10 transition-colors duration-300"
+      className="film-grain relative bg-[#E7DEC8] dark:bg-[#12100D] text-[#191A2B] dark:text-[#F7F3EC] py-28 sm:py-36 overflow-hidden border-b border-[#191A2B]/10 dark:border-amber-200/10 transition-colors duration-300"
     >
       {/* Subtle Ambient Radial Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#FF684D]/10 dark:bg-[#FF684D]/15 blur-[160px] pointer-events-none rounded-full" />
@@ -157,7 +220,7 @@ export function ContactSheetSection() {
               <CameraIcon size={14} />
               <span>TRACES OF LIGHT & FILM</span>
               <span className="h-px w-8 bg-[#FF684D]/40" />
-              <span className="text-[#767C9D] dark:text-[#A4AAC7] font-normal">
+              <span className="text-[#767C9D] dark:text-[#C8BCAA] font-normal">
                 FOLIO № 03 · 35MM ARCHIVAL EMULSION
               </span>
             </div>
@@ -167,182 +230,188 @@ export function ContactSheetSection() {
             </h2>
           </div>
 
-          <div className="font-mono text-xs text-[#767C9D] dark:text-[#A4AAC7] uppercase tracking-wider flex items-center gap-2">
+          <div className="font-mono text-xs text-[#767C9D] dark:text-[#C8BCAA] uppercase tracking-wider flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#FFB93F] animate-ping" />
             <span>SELECT ANY FRAME TO INSPECT WITH DARKROOM LOUPE</span>
           </div>
         </div>
 
-        {/* 35mm Physical Film Strip Composition */}
-        <div ref={filmstripRef} className="relative mb-12 will-change-transform">
-          <div className="relative rounded-2xl bg-[#090A11] p-4 sm:p-8 border border-black/30 dark:border-white/10 shadow-[0_28px_70px_rgba(25,26,43,0.22)] dark:shadow-[0_30px_80px_rgba(0,0,0,0.9)] overflow-hidden">
-            {/* Top Film Sprockets Bar */}
-            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-white/10 overflow-hidden font-mono text-[10px] text-[#FFB93F] tracking-widest uppercase">
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#FFB93F]" />
+        {/* Light Warm Parchment Contact Sheet Tray */}
+        <div ref={filmstripRef} className="relative mb-10 will-change-transform">
+          <div className="neu-card relative rounded-3xl p-4 sm:p-8 overflow-hidden">
+            {/* Top Recessed Sprocket Perforations Bar */}
+            <div className="flex items-center justify-between pb-4 sm:pb-5 border-b border-[#191A2B]/10 dark:border-amber-200/10 overflow-hidden font-mono text-[10px] text-[#8B6914] dark:text-[#FFB93F] tracking-widest uppercase">
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF684D]" />
                 <span className="hidden sm:inline">SAFETY FILM · 400 ISO MONOCHROME</span>
                 <span className="sm:hidden">400 ISO</span>
               </div>
-              <div className="flex items-center gap-3 sm:gap-6">
-                {[...Array(14)].map((_, i) => (
+              <div
+                ref={topSprocketRef}
+                className="flex items-center gap-3 sm:gap-5 px-4 will-change-transform"
+              >
+                {[...Array(12)].map((_, i) => (
                   <div
                     key={`top-sprocket-${i}`}
-                    className="w-4 h-6 sm:w-5 sm:h-7 rounded-[4px] bg-[#141524] border border-white/10 shrink-0"
+                    className="neu-well w-4 h-5 sm:w-5 sm:h-6 rounded-[4px] shrink-0"
                     aria-hidden="true"
                   />
                 ))}
               </div>
-              <span className="hidden sm:inline">REGISTRATION 01A–03A · CURATOR&apos;S PROOF</span>
+              <span className="hidden sm:inline shrink-0 text-[#767C9D] dark:text-[#C8BCAA]">
+                REGISTRATION 01A–03A · CURATOR&apos;S PROOF
+              </span>
             </div>
 
-            {/* Middle Frame Bays: Upgraded High-End Awwwards Cards */}
+            {/* Middle Frame Bays: Warm Light-Mode Neumorphic Slide Mounts */}
             <div
               ref={framesContainerRef}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 py-6 sm:py-8"
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7 py-6 sm:py-8"
             >
               {FRAMES.map((frame) => {
                 const isSelected = selectedFrame.id === frame.id;
                 return (
-                  <button
+                  <NeumorphicCard
                     key={frame.id}
-                    type="button"
-                    onClick={() => handleSelectFrame(frame)}
-                    className={`group relative text-left rounded-2xl overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF684D] transition-all duration-300 will-change-transform cursor-pointer border ${
+                    tilt
+                    spotlight
+                    data-cursor="LOUPE"
+                    className={`rounded-2xl transition-all duration-300 ${
                       isSelected
-                        ? 'border-[#FF684D] bg-[#121320] shadow-[0_16px_40px_rgba(255,104,77,0.3)] ring-1 ring-[#FF684D] scale-[1.02]'
-                        : 'border-white/10 bg-[#0F101A] opacity-80 hover:opacity-100 hover:border-white/25 hover:scale-[1.01] hover:bg-[#121422]'
+                        ? 'ring-2 ring-[#FF684D] scale-[1.02]'
+                        : 'hover:-translate-y-1 opacity-95 hover:opacity-100'
                     }`}
                   >
-                    {/* Top Rebate Edge Bar with Authentic Film Markings */}
-                    <div className="px-4 py-2 bg-black/60 border-b border-white/10 flex items-center justify-between font-mono text-[10px] tracking-widest uppercase">
-                      <div className="flex items-center gap-1.5 text-[#FFB93F]">
-                        <span>▲</span>
-                        <span className="font-bold">{frame.frameCode}</span>
-                        <span className="text-white/40">·</span>
-                        <span className="text-white/60">{frame.index}</span>
-                      </div>
-                      <div className="text-[9px] text-[#A4AAC7]">{frame.metadata.lens}</div>
-                    </div>
-
-                    {/* Photographic Aperture Window */}
-                    <div className="relative aspect-[4/3] bg-black overflow-hidden m-3 rounded-lg border border-white/10 shadow-[inset_0_2px_12px_rgba(0,0,0,0.8)]">
-                      <Image
-                        src={frame.image}
-                        alt={frame.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-106"
-                      />
-
-                      {/* Subtle Darkroom Vignette */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
-
-                      {/* Grease-Pencil Selection Overlay on Frame 02 */}
-                      {frame.id === 'frame-02' && (
-                        <div
-                          className="absolute inset-0 pointer-events-none z-10 opacity-90 mix-blend-screen"
-                          aria-hidden="true"
-                        >
-                          <Image
-                            src="/images/illustrations/overlay_grease_pencil.svg"
-                            alt=""
-                            fill
-                            className="object-contain p-2"
-                          />
+                    <button
+                      type="button"
+                      onClick={() => handleSelectFrame(frame)}
+                      className="group w-full text-left p-4 sm:p-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF684D] rounded-2xl cursor-pointer block"
+                    >
+                      {/* Clean Slide Mount Header */}
+                      <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#191A2B]/10 dark:border-amber-200/10 font-mono text-[10px] tracking-widest uppercase">
+                        <div className="flex items-center gap-1.5">
+                          <span className={isSelected ? 'text-[#FF684D]' : 'text-[#8B6914] dark:text-[#FFB93F]'}>
+                            ▲
+                          </span>
+                          <span className="font-bold text-[#191A2B] dark:text-[#F7F3EC]">
+                            {frame.frameCode}
+                          </span>
+                          <span className="text-[#767C9D] dark:text-[#C8BCAA]">· {frame.index}</span>
                         </div>
-                      )}
-
-                      {/* Corner Crop Registration Marks */}
-                      <span className="absolute top-2 left-2 text-[10px] font-mono text-white/50 pointer-events-none leading-none">
-                        ⌜
-                      </span>
-                      <span className="absolute top-2 right-2 text-[10px] font-mono text-white/50 pointer-events-none leading-none">
-                        ⌝
-                      </span>
-                      <span className="absolute bottom-2 left-2 text-[10px] font-mono text-white/50 pointer-events-none leading-none">
-                        ⌞
-                      </span>
-                      <span className="absolute bottom-2 right-2 text-[10px] font-mono text-white/50 pointer-events-none leading-none">
-                        ⌟
-                      </span>
-
-                      {/* Frame Code Stamp Badge */}
-                      <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-sm bg-black/80 backdrop-blur-md border border-white/20 font-mono text-[9px] text-[#FFB93F] tracking-widest uppercase">
-                        {frame.frameCode}
-                      </div>
-
-                      {/* Status Indicator Badge */}
-                      <div className="absolute top-2.5 right-2.5">
                         {isSelected ? (
-                          <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FF684D] font-mono text-[9px] text-white tracking-widest uppercase font-bold shadow-md">
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#FF684D] text-white text-[9px] font-bold">
                             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                            <span>INSPECTING</span>
-                          </div>
+                            INSPECTING
+                          </span>
                         ) : (
-                          <div className="px-2 py-0.5 rounded-sm bg-black/60 backdrop-blur-md border border-white/10 font-mono text-[9px] text-white/60 tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity">
-                            CLICK TO VIEW
-                          </div>
+                          <span className="text-[9px] text-[#767C9D] dark:text-[#C8BCAA]">
+                            {frame.metadata.lens}
+                          </span>
                         )}
                       </div>
 
-                      {/* Bottom Image Micro-Specs */}
-                      <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between font-mono text-[9px] text-white/80 uppercase tracking-wider pointer-events-none">
-                        <span className="px-1.5 py-0.5 rounded bg-black/60 backdrop-blur-sm">
-                          {frame.metadata.exposure}
-                        </span>
-                        <span className="text-[#FFB93F]">{frame.metadata.date}</span>
-                      </div>
-                    </div>
+                      {/* Recessed Photographic Aperture Well */}
+                      <div className="neu-well p-1.5 rounded-xl mb-4">
+                        <div className="contact-aperture relative aspect-[4/3] rounded-lg overflow-hidden bg-[#191A2B]/10">
+                          <Image
+                            src={frame.image}
+                            alt={frame.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                            style={{ filter: 'sepia(0.14) contrast(1.03)' }}
+                          />
 
-                    {/* Frame Card Editorial Technical Mount */}
-                    <div className="p-4 pt-1 pb-5 bg-transparent space-y-2">
-                      <div className="flex items-baseline justify-between gap-2">
-                        <h3
-                          className={`font-serif text-lg sm:text-xl leading-snug transition-colors ${
-                            isSelected
-                              ? 'text-[#FF684D]'
-                              : 'text-[#F7F3EC] group-hover:text-[#FF684D]'
-                          }`}
-                        >
-                          {frame.title}
-                        </h3>
-                        <span className="shrink-0 font-mono text-[10px] text-[#39BFAE] font-bold">
-                          {frame.metadata.iso.split(' ')[0]} ISO
-                        </span>
+                          {/* Soft Bottom Scrim for Spec Legibility */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
+
+                          {/* Grease-Pencil Selection Overlay on Frame 02 */}
+                          {frame.id === 'frame-02' && (
+                            <div
+                              className="absolute inset-0 pointer-events-none z-10 opacity-85 mix-blend-screen"
+                              aria-hidden="true"
+                            >
+                              <Image
+                                src="/images/illustrations/overlay_grease_pencil.svg"
+                                alt=""
+                                fill
+                                className="object-contain p-2"
+                              />
+                            </div>
+                          )}
+
+                          {/* Bottom Image Micro-Specs */}
+                          <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between font-mono text-[9px] text-white/90 uppercase tracking-wider pointer-events-none">
+                            <span className="px-2 py-0.5 rounded-sm bg-black/55 backdrop-blur-xs">
+                              {frame.metadata.exposure}
+                            </span>
+                            <span className="text-[#F7D84B] font-semibold">
+                              {frame.metadata.date}
+                            </span>
+                          </div>
+                        </div>
                       </div>
 
-                      <p className="font-sans text-xs text-[#A4AAC7] line-clamp-2 font-light leading-relaxed">
-                        {frame.caption}
-                      </p>
+                      {/* Editorial Slide Mount Caption */}
+                      <div className="space-y-2">
+                        <div className="flex items-baseline justify-between gap-2">
+                          <h3
+                            className={`font-serif text-lg sm:text-xl leading-snug transition-colors ${
+                              isSelected
+                                ? 'text-[#FF684D]'
+                                : 'text-[#191A2B] dark:text-[#F7F3EC] group-hover:text-[#FF684D]'
+                            }`}
+                          >
+                            {frame.title}
+                          </h3>
+                          <span className="shrink-0 font-mono text-[10px] text-[#1F8A7E] dark:text-[#FFB93F] font-bold">
+                            {frame.metadata.iso.split(' ')[0]} ISO
+                          </span>
+                        </div>
 
-                      {/* Action CTA indicator */}
-                      <div className="pt-2 border-t border-white/10 flex items-center justify-between font-mono text-[10px] text-[#FFB93F] uppercase tracking-wider">
-                        <span className="text-[#767C9D] group-hover:text-[#FF684D] transition-colors">
-                          {isSelected ? 'ACTIVE IN DARKROOM LOUPE' : 'INSPECT NEGATIVE'}
-                        </span>
-                        <span className="transform group-hover:translate-x-1 transition-transform">
-                          <ArrowRightIcon size={12} />
-                        </span>
+                        <p className="font-sans text-xs text-[#484C69] dark:text-[#C8BCAA] line-clamp-2 font-light leading-relaxed">
+                          {frame.caption}
+                        </p>
+
+                        <div className="pt-2.5 border-t border-[#191A2B]/10 dark:border-amber-200/10 flex items-center justify-between font-mono text-[10px] uppercase tracking-wider">
+                          <span
+                            className={
+                              isSelected
+                                ? 'text-[#FF684D] font-semibold'
+                                : 'text-[#767C9D] dark:text-[#C8BCAA] group-hover:text-[#FF684D] transition-colors'
+                            }
+                          >
+                            {isSelected ? 'ACTIVE IN DARKROOM LOUPE' : 'INSPECT NEGATIVE'}
+                          </span>
+                          <span className="text-[#FF684D] transform group-hover:translate-x-1 transition-transform">
+                            <ArrowRightIcon size={12} />
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </button>
+                    </button>
+                  </NeumorphicCard>
                 );
               })}
             </div>
 
-            {/* Bottom Film Sprockets Bar */}
-            <div className="flex items-center justify-between pt-4 sm:pt-6 border-t border-white/10 overflow-hidden font-mono text-[10px] text-[#FFB93F] tracking-widest uppercase">
-              <span className="hidden sm:inline">EMULSION #8841-B · NITRATE-SAFE BASE</span>
-              <div className="flex items-center gap-3 sm:gap-6">
-                {[...Array(14)].map((_, i) => (
+            {/* Bottom Recessed Sprocket Perforations Bar */}
+            <div className="flex items-center justify-between pt-4 sm:pt-5 border-t border-[#191A2B]/10 dark:border-amber-200/10 overflow-hidden font-mono text-[10px] text-[#8B6914] dark:text-[#FFB93F] tracking-widest uppercase">
+              <span className="hidden sm:inline shrink-0 text-[#767C9D] dark:text-[#C8BCAA]">
+                EMULSION #8841-B · NITRATE-SAFE BASE
+              </span>
+              <div
+                ref={bottomSprocketRef}
+                className="flex items-center gap-3 sm:gap-5 px-4 will-change-transform"
+              >
+                {[...Array(12)].map((_, i) => (
                   <div
                     key={`bottom-sprocket-${i}`}
-                    className="w-4 h-6 sm:w-5 sm:h-7 rounded-[4px] bg-[#141524] border border-white/10 shrink-0"
+                    className="neu-well w-4 h-5 sm:w-5 sm:h-6 rounded-[4px] shrink-0"
                     aria-hidden="true"
                   />
                 ))}
               </div>
-              <span className="hidden sm:inline">ECHOES ANALOG VAULT © 2026</span>
+              <span className="hidden sm:inline shrink-0">ECHOES ANALOG VAULT © 2026</span>
             </div>
           </div>
         </div>
@@ -350,21 +419,21 @@ export function ContactSheetSection() {
         {/* Upgraded Inspected Frame Darkroom Loupe Console */}
         <div
           ref={loupeRef}
-          className="rounded-2xl bg-white/95 dark:bg-[#141524]/95 backdrop-blur-md border border-[#191A2B]/15 dark:border-white/15 p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-[0_16px_40px_rgba(25,26,43,0.08)] dark:shadow-2xl will-change-transform"
+          className="neu-card rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 will-change-transform"
         >
           <div className="max-w-xl">
             <div className="flex items-center gap-3 font-mono text-xs text-[#FF684D] tracking-widest uppercase mb-2 font-bold">
               <SparklesIcon size={14} />
               <span>DARKROOM LOUPE · EXAMINING FRAME {selectedFrame.frameCode}</span>
               <span className="h-px w-6 bg-[#FF684D]/40" />
-              <span className="text-[#767C9D] dark:text-[#A4AAC7] font-normal text-[10px]">
+              <span className="text-[#767C9D] dark:text-[#C8BCAA] font-normal text-[10px]">
                 MAGNIFICATION: 2.8X
               </span>
             </div>
             <h3 className="font-serif text-2xl sm:text-3xl text-[#191A2B] dark:text-[#F7F3EC] mb-2 leading-tight">
               {selectedFrame.title}
             </h3>
-            <p className="font-sans text-sm text-[#484C69] dark:text-[#A4AAC7] leading-relaxed font-light">
+            <p className="font-sans text-sm text-[#484C69] dark:text-[#C8BCAA] leading-relaxed font-light">
               {selectedFrame.caption} In Echoes, high-resolution photographs are preserved with
               authenticated orientation safety, signed Cloudinary storage, and analog grain
               reproduction.
@@ -373,32 +442,32 @@ export function ContactSheetSection() {
 
           {/* Technical Metadata Grid Console */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 shrink-0 font-mono text-xs w-full md:w-auto">
-            <div className="p-3.5 rounded-xl bg-[#191A2B]/5 dark:bg-white/5 border border-[#191A2B]/10 dark:border-white/10 text-center">
-              <div className="text-[10px] text-[#767C9D] dark:text-[#A4AAC7] uppercase tracking-wider mb-1">
+            <div className="neu-well p-3.5 rounded-xl text-center">
+              <div className="text-[10px] text-[#767C9D] dark:text-[#C8BCAA] uppercase tracking-wider mb-1">
                 LENS
               </div>
               <div className="text-[#191A2B] dark:text-[#F7F3EC] font-semibold text-xs sm:text-sm">
                 {selectedFrame.metadata.lens}
               </div>
             </div>
-            <div className="p-3.5 rounded-xl bg-[#191A2B]/5 dark:bg-white/5 border border-[#191A2B]/10 dark:border-white/10 text-center">
-              <div className="text-[10px] text-[#767C9D] dark:text-[#A4AAC7] uppercase tracking-wider mb-1">
+            <div className="neu-well p-3.5 rounded-xl text-center">
+              <div className="text-[10px] text-[#767C9D] dark:text-[#C8BCAA] uppercase tracking-wider mb-1">
                 EXPOSURE
               </div>
               <div className="text-[#191A2B] dark:text-[#F7F3EC] font-semibold text-xs sm:text-sm">
                 {selectedFrame.metadata.exposure}
               </div>
             </div>
-            <div className="p-3.5 rounded-xl bg-[#191A2B]/5 dark:bg-white/5 border border-[#191A2B]/10 dark:border-white/10 text-center">
-              <div className="text-[10px] text-[#767C9D] dark:text-[#A4AAC7] uppercase tracking-wider mb-1">
+            <div className="neu-well p-3.5 rounded-xl text-center">
+              <div className="text-[10px] text-[#767C9D] dark:text-[#C8BCAA] uppercase tracking-wider mb-1">
                 STOCK
               </div>
               <div className="text-[#191A2B] dark:text-[#F7F3EC] font-semibold text-xs sm:text-sm">
                 {selectedFrame.metadata.iso}
               </div>
             </div>
-            <div className="p-3.5 rounded-xl bg-[#191A2B]/5 dark:bg-white/5 border border-[#191A2B]/10 dark:border-white/10 text-center">
-              <div className="text-[10px] text-[#767C9D] dark:text-[#A4AAC7] uppercase tracking-wider mb-1">
+            <div className="neu-well p-3.5 rounded-xl text-center">
+              <div className="text-[10px] text-[#767C9D] dark:text-[#C8BCAA] uppercase tracking-wider mb-1">
                 RECORDED
               </div>
               <div className="text-[#FF684D] font-semibold text-xs sm:text-sm">

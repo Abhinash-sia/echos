@@ -25,10 +25,10 @@ import { PhotoLightbox } from '@/components/ui/PhotoLightbox';
 import { ConfirmationDialog } from '@/components/ui/ConfirmationDialog';
 import { useToast } from '@/contexts/ToastContext';
 
-function CapsuleDetailContent({ params }: { params: Promise<{ id: string }> | { id: string } }) {
+function CapsuleDetailContent({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const toast = useToast();
-  const resolvedParams = use(Promise.resolve(params));
+  const resolvedParams = use(params);
   const id = resolvedParams.id;
 
   const [capsule, setCapsule] = useState<TimeCapsuleItem | null>(null);
@@ -523,7 +523,7 @@ function CapsuleDetailContent({ params }: { params: Promise<{ id: string }> | { 
 export default function CapsuleDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }> | { id: string };
+  params: Promise<{ id: string }>;
 }) {
   return (
     <React.Suspense

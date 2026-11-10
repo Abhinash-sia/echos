@@ -108,17 +108,22 @@ export function ProductShowcaseSection() {
         }
       );
 
-      // Subtle Vertical Parallax Scrub
-      gsap.to(browserFrameRef.current, {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1.2,
-        },
-        yPercent: -4,
-        ease: 'none',
-      });
+      // Transform-on-scroll scale & depth glide
+      gsap.fromTo(
+        browserFrameRef.current,
+        { scale: 0.93, yPercent: 5 },
+        {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'center center',
+            scrub: 0.9,
+          },
+          scale: 1,
+          yPercent: -3,
+          ease: 'none',
+        }
+      );
 
       // Desktop 3D Perspective Tilt on Mouse Movement
       const frameEl = browserFrameRef.current;
@@ -185,16 +190,17 @@ export function ProductShowcaseSection() {
 
   return (
     <section
+      id="showcase"
       ref={sectionRef}
-      className="relative bg-[#EFE8DD] dark:bg-[#0B0C14] text-[#191A2B] dark:text-[#F7F3EC] py-24 sm:py-36 overflow-hidden border-b border-[#191A2B]/10 dark:border-white/10 transition-colors duration-300"
+      className="film-grain relative bg-[#E7DEC8] dark:bg-[#12100D] text-[#191A2B] dark:text-[#F7F3EC] py-24 sm:py-36 overflow-hidden border-b border-[#191A2B]/10 dark:border-amber-200/10 transition-colors duration-300"
     >
       {/* Background Radial Glow */}
-      <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[800px] h-[500px] bg-[#4F66E8]/10 blur-[160px] pointer-events-none rounded-full" />
+      <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[800px] h-[500px] bg-[#FF684D]/10 blur-[160px] pointer-events-none rounded-full" />
 
       <Container size="wide" className="relative z-10">
         {/* Section Header */}
         <div className="max-w-3xl mb-12 sm:mb-16">
-          <div className="flex items-center gap-2.5 font-mono text-xs uppercase tracking-widest text-[#4F66E8] dark:text-[#39BFAE] mb-4 font-bold">
+          <div className="flex items-center gap-2.5 font-mono text-xs uppercase tracking-widest text-[#4F66E8] dark:text-[#FFB93F] mb-4 font-bold">
             <SparklesIcon size={14} />
             <span>THE REAL EXPERIENCE</span>
           </div>
@@ -202,7 +208,7 @@ export function ProductShowcaseSection() {
             Genuine Craftsmanship.{' '}
             <span className="italic font-normal text-[#FF684D]">No Fabricated Mocks.</span>
           </h2>
-          <p className="font-sans text-base sm:text-lg text-[#484C69] dark:text-[#A4AAC7] leading-relaxed mt-4 font-light">
+          <p className="font-sans text-base sm:text-lg text-[#484C69] dark:text-[#C8BCAA] leading-relaxed mt-4 font-light">
             Every interface shown below is captured directly from the live Echoes application. Real
             databases, authenticated session guards, private media storage, and tactile UI
             components.
@@ -219,10 +225,10 @@ export function ProductShowcaseSection() {
                   key={view.id}
                   type="button"
                   onClick={() => handleSelectTab(view)}
-                  className={`flex items-center gap-2.5 px-5 py-3 rounded-xl font-mono text-xs uppercase tracking-wider whitespace-nowrap transition-all duration-200 ${
+                  className={`flex items-center gap-2.5 px-5 py-3 rounded-xl font-mono text-xs uppercase tracking-wider whitespace-nowrap cursor-pointer ${
                     isSelected
-                      ? 'bg-[#191A2B] dark:bg-white text-white dark:text-[#191A2B] shadow-[0_8px_20px_rgba(25,26,43,0.18)] font-bold scale-[1.02]'
-                      : 'bg-white/80 dark:bg-white/5 text-[#484C69] dark:text-[#A4AAC7] hover:bg-white dark:hover:bg-white/10 border border-[#191A2B]/10 dark:border-white/10'
+                      ? 'neu-pill-active text-[#FF684D] font-bold'
+                      : 'neu-pill text-[#484C69] dark:text-[#C8BCAA] hover:text-[#191A2B] dark:hover:text-[#F7F3EC]'
                   }`}
                 >
                   <span>{view.icon}</span>
@@ -236,10 +242,10 @@ export function ProductShowcaseSection() {
         {/* Architectural Browser Frame */}
         <div
           ref={browserFrameRef}
-          className="rounded-2xl bg-white dark:bg-[#141524] border border-[#191A2B]/15 dark:border-white/15 overflow-hidden shadow-[0_25px_60px_rgba(25,26,43,0.12)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.8)] will-change-transform"
+          className="neu-card rounded-2xl overflow-hidden will-change-transform"
         >
           {/* Architectural Browser Chrome Bar */}
-          <div className="h-11 bg-[#F7F3EC] dark:bg-[#090A11] px-5 border-b border-[#191A2B]/10 dark:border-white/10 flex items-center justify-between">
+          <div className="h-12 bg-[#E3D7BC]/70 dark:bg-[#0E0C09] px-5 border-b border-[#191A2B]/10 dark:border-amber-200/10 flex items-center justify-between">
             {/* Traffic Lights */}
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-[#FF684D]" />
@@ -248,7 +254,7 @@ export function ProductShowcaseSection() {
             </div>
 
             {/* URL Indicator */}
-            <div className="px-6 py-1 rounded-md bg-white/70 dark:bg-white/5 border border-[#191A2B]/10 dark:border-white/10 font-mono text-[11px] text-[#484C69] dark:text-[#A4AAC7] truncate max-w-xs sm:max-w-md">
+            <div className="neu-well px-6 py-1 rounded-md font-mono text-[11px] text-[#484C69] dark:text-[#C8BCAA] truncate max-w-xs sm:max-w-md">
               https://echoes.vault{activeTab.route}
             </div>
 
@@ -259,24 +265,26 @@ export function ProductShowcaseSection() {
           </div>
 
           {/* High-Resolution Screenshot Canvas */}
-          <div
-            ref={screenshotRef}
-            className="relative aspect-[16/10] bg-black/10 overflow-hidden will-change-transform"
-          >
-            <Image
-              src={activeTab.image}
-              alt={activeTab.title}
-              fill
-              priority
-              sizes="(max-width: 1200px) 100vw, 1200px"
-              className="object-cover object-top"
-            />
+          <div className="p-3 sm:p-5">
+            <div
+              ref={screenshotRef}
+              className="neu-well relative aspect-[16/10] rounded-xl overflow-hidden will-change-transform"
+            >
+              <Image
+                src={activeTab.image}
+                alt={activeTab.title}
+                fill
+                priority
+                sizes="(max-width: 1200px) 100vw, 1200px"
+                className="object-cover object-top"
+              />
+            </div>
           </div>
 
           {/* Showcase Editorial Details Bar */}
           <div
             ref={detailsRef}
-            className="p-6 sm:p-10 bg-white dark:bg-[#141524] border-t border-[#191A2B]/10 dark:border-white/10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 will-change-transform"
+            className="p-6 sm:p-10 border-t border-[#191A2B]/10 dark:border-amber-200/10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 will-change-transform"
           >
             <div className="max-w-2xl">
               <div className="font-mono text-xs text-[#FF684D] uppercase tracking-widest mb-1 font-bold">
@@ -285,14 +293,14 @@ export function ProductShowcaseSection() {
               <h3 className="font-serif text-2xl sm:text-3xl text-[#191A2B] dark:text-[#F7F3EC] mb-3">
                 {activeTab.title}
               </h3>
-              <p className="font-sans text-sm text-[#484C69] dark:text-[#A4AAC7] leading-relaxed mb-6 font-light">
+              <p className="font-sans text-sm text-[#484C69] dark:text-[#C8BCAA] leading-relaxed mb-6 font-light">
                 {activeTab.description}
               </p>
 
               {/* Feature Points */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono text-xs text-[#191A2B] dark:text-[#F7F3EC]">
                 {activeTab.features.map((feat) => (
-                  <div key={feat} className="flex items-center gap-2">
+                  <div key={feat} className="neu-well flex items-center gap-2 px-3 py-2 rounded-lg">
                     <span className="text-[#39BFAE] font-bold">✓</span>
                     <span>{feat}</span>
                   </div>

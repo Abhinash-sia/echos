@@ -1,14 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { ThemeToggle } from './ThemeToggle';
 import { Container } from './Container';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
-import { LogOutIcon, MenuIcon, CloseIcon, SettingsIcon } from '@/components/icons/Icons';
+import { MenuIcon, CloseIcon, SettingsIcon } from '@/components/icons/Icons';
 
 export interface AppHeaderProps {
   onToggleMobileNav?: () => void;
@@ -16,21 +14,7 @@ export interface AppHeaderProps {
 }
 
 export function AppHeader({ onToggleMobileNav, isMobileNavOpen }: AppHeaderProps) {
-  const { user, logout, isLoading } = useAuth();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    try {
-      setIsLoggingOut(true);
-      await logout();
-      router.push('/login');
-    } catch (err) {
-      console.error('[AppHeader] Logout error:', err);
-    } finally {
-      setIsLoggingOut(false);
-    }
-  };
+  const { user, isLoading } = useAuth();
 
   // Derive user initials
   const initials = user?.name
@@ -76,7 +60,7 @@ export function AppHeader({ onToggleMobileNav, isMobileNavOpen }: AppHeaderProps
             </Badge>
           </div>
 
-          {/* Right: User Profile, Sign Out, Settings, Theme Toggle */}
+          {/* Right: User Profile, Settings, Theme Toggle */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Authenticated User Status */}
             {user ? (
@@ -114,20 +98,6 @@ export function AppHeader({ onToggleMobileNav, isMobileNavOpen }: AppHeaderProps
                 <SettingsIcon size={18} />
               </Link>
             )}
-
-            {/* Logout Button */}
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={handleLogout}
-              disabled={isLoggingOut}
-              loading={isLoggingOut}
-              icon={<LogOutIcon size={14} />}
-              className="hidden sm:inline-flex"
-              title="Sign out of your account"
-            >
-              Sign Out
-            </Button>
 
             <ThemeToggle />
           </div>

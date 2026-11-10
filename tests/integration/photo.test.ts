@@ -158,7 +158,7 @@ describe('Photo Management & Cloudinary Integration Tests', () => {
       expect(json.data.publicId).toBeDefined();
       expect(json.data.signedUrl).toBeDefined();
       expect(json.data.signedUrl).toContain('image/authenticated');
-      expect(json.data.signedUrl).toContain('__cld_token__');
+      expect(json.data.signedUrl).toMatch(/\/s--[A-Za-z0-9_-]+--\//);
       expect(mockUploadFn).toHaveBeenCalledTimes(1);
 
       // Verify relationship consistency in MongoDB

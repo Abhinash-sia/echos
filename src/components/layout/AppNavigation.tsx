@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Container } from './Container';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -10,11 +10,9 @@ import {
   LockIcon,
   CalendarIcon,
   SparklesIcon,
-  LogOutIcon,
   UserIcon,
   SettingsIcon,
 } from '@/components/icons/Icons';
-import { Button } from '@/components/ui/Button';
 
 export interface NavItem {
   label: string;
@@ -63,14 +61,7 @@ export interface AppNavigationProps {
 
 export function AppNavigation({ isMobileOpen = false, onCloseMobile }: AppNavigationProps) {
   const pathname = usePathname();
-  const router = useRouter();
-  const { user, logout } = useAuth();
-
-  const handleMobileLogout = async () => {
-    if (onCloseMobile) onCloseMobile();
-    await logout();
-    router.push('/login');
-  };
+  const { user } = useAuth();
 
   return (
     <>
@@ -132,7 +123,6 @@ export function AppNavigation({ isMobileOpen = false, onCloseMobile }: AppNaviga
           pathname={pathname}
           user={user}
           onClose={onCloseMobile}
-          onLogout={handleMobileLogout}
         />
       )}
     </>
@@ -143,10 +133,9 @@ interface MobileNavDrawerProps {
   pathname: string;
   user: { name?: string; email?: string } | null;
   onClose?: () => void;
-  onLogout: () => Promise<void>;
 }
 
-function MobileNavDrawer({ pathname, user, onClose, onLogout }: MobileNavDrawerProps) {
+function MobileNavDrawer({ pathname, user, onClose }: MobileNavDrawerProps) {
   const drawerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -285,18 +274,6 @@ function MobileNavDrawer({ pathname, user, onClose, onLogout }: MobileNavDrawerP
           </div>
         </div>
 
-        {/* Bottom: Logout */}
-        <div className="pt-4 border-t border-[#191A2B]/10 dark:border-white/10">
-          <Button
-            variant="coral"
-            size="sm"
-            onClick={onLogout}
-            icon={<LogOutIcon size={14} />}
-            className="w-full justify-center"
-          >
-            Sign Out
-          </Button>
-        </div>
       </div>
     </div>
   );

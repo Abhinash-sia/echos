@@ -13,15 +13,15 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       return;
     }
 
-    // Initialize Lenis with gentle, editorial inertia
+    // Initialize Lenis with weighted, meditative editorial inertia
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 1.4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 0.82,
+      touchMultiplier: 1.4,
     });
     lenisRef.current = lenis;
 

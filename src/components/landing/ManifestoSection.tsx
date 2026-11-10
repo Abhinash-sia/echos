@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Container } from '@/components/layout/Container';
 import { FeatherIcon, LockIcon, CompassIcon } from '@/components/icons/Icons';
+import { NeumorphicCard } from '@/components/landing/NeumorphicCard';
 import { gsap, isReducedMotion } from '@/lib/motion';
 
 export function ManifestoSection() {
@@ -31,21 +32,28 @@ export function ManifestoSection() {
         ease: 'none',
       });
 
-      // 2. Monumental Quote Staggered Entrance
-      gsap.fromTo(
-        quoteRef.current,
-        { opacity: 0, y: 32 },
-        {
-          scrollTrigger: {
-            trigger: quoteRef.current,
-            start: 'top 82%',
-          },
-          opacity: 1,
-          y: 0,
-          duration: 1.0,
-          ease: 'power3.out',
+      // 2. Monumental Quote Scrubbed Word-by-Word Storytelling Reveal
+      if (quoteRef.current) {
+        const words = quoteRef.current.querySelectorAll('.quote-word');
+        if (words.length > 0) {
+          gsap.fromTo(
+            words,
+            { opacity: 0.16, y: 12 },
+            {
+              opacity: 1,
+              y: 0,
+              stagger: 0.08,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: quoteRef.current,
+                start: 'top 86%',
+                end: 'top 38%',
+                scrub: 0.5,
+              },
+            }
+          );
         }
-      );
+      }
 
       // 3. Editorial Prose & Photo Plate Reveal
       gsap.fromTo(
@@ -79,7 +87,25 @@ export function ManifestoSection() {
         }
       );
 
-      // Photo Plate Subtle Parallax Scrub
+      // Photo Plate Curtain Clip-Path Unveil + Parallax Scrub
+      const photoWindow = photoPlateRef.current?.querySelector('.manifesto-photo-window');
+      if (photoWindow) {
+        gsap.fromTo(
+          photoWindow,
+          { clipPath: 'inset(14% 4% 14% 4% round 8px)' },
+          {
+            clipPath: 'inset(0% 0% 0% 0% round 8px)',
+            ease: 'none',
+            scrollTrigger: {
+              trigger: photoPlateRef.current,
+              start: 'top 90%',
+              end: 'top 42%',
+              scrub: 0.6,
+            },
+          }
+        );
+      }
+
       gsap.to(photoPlateRef.current, {
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -119,10 +145,10 @@ export function ManifestoSection() {
     <section
       ref={sectionRef}
       id="manifesto"
-      className="relative bg-[#F7F3EC] dark:bg-[#141524] text-[#191A2B] dark:text-[#F7F3EC] pt-28 pb-32 sm:py-40 overflow-hidden border-b border-[#191A2B]/10 dark:border-white/10 transition-colors duration-300"
+      className="film-grain paper-crinkle relative bg-[#EDE5D0] dark:bg-[#171410] text-[#191A2B] dark:text-[#F7F3EC] pt-28 pb-32 sm:py-40 overflow-hidden border-b border-[#191A2B]/10 dark:border-amber-200/10 transition-colors duration-300"
     >
-      {/* Paper Wash Texture */}
-      <div className="absolute inset-0 opacity-40 dark:opacity-10 pointer-events-none mix-blend-multiply dark:mix-blend-overlay">
+      {/* Paper Wash Texture — deepened for more visible parchment */}
+      <div className="absolute inset-0 opacity-65 dark:opacity-22 pointer-events-none mix-blend-multiply dark:mix-blend-overlay">
         <Image
           src="/images/backgrounds/bg_parchment_wash.webp"
           alt=""
@@ -147,13 +173,21 @@ export function ManifestoSection() {
         />
       </div>
 
+      {/* Subtle Vertical Japanese "Ma" Marginalia */}
+      <div
+        aria-hidden="true"
+        className="hidden xl:flex items-center gap-2 absolute left-6 top-36 writing-vertical font-mono text-[10px] tracking-[0.28em] uppercase text-[#767C9D]/55 dark:text-[#C8BCAA]/45 pointer-events-none select-none z-10"
+      >
+        <span>間 · THE SPACE BETWEEN · CHAPTER 02</span>
+      </div>
+
       <Container size="wide" className="relative z-20">
         <div className="max-w-5xl mx-auto">
           {/* Subtle Editorial Kicker */}
           <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-[#FF684D] font-bold mb-8">
             <span>THE ARCHITECTURE OF MEMORY</span>
             <span className="h-px w-12 bg-[#FF684D]/40" />
-            <span className="text-[#767C9D] dark:text-[#A4AAC7] font-normal">
+            <span className="text-[#767C9D] dark:text-[#C8BCAA] font-normal">
               DE ARCHITECTURA MEMORIAE
             </span>
           </div>
@@ -161,13 +195,40 @@ export function ManifestoSection() {
           {/* Monumental Lead Statement */}
           <blockquote
             ref={quoteRef}
-            className="font-serif text-3xl sm:text-5xl lg:text-[3.75rem] text-[#191A2B] dark:text-[#F7F3EC] leading-[1.16] tracking-tight font-normal mb-16 sm:mb-24 will-change-transform"
+            className="font-serif text-3xl sm:text-5xl lg:text-[3.75rem] text-[#191A2B] dark:text-[#F7F3EC] leading-[1.16] tracking-tight font-normal mb-16 sm:mb-24"
           >
-            &ldquo;We do not lose our memories all at once; they fade like pencil markings on{' '}
-            <span className="italic font-normal text-[#4F66E8] dark:text-[#39BFAE] underline decoration-[#FF684D]/40 underline-offset-8">
-              sun-bleached cotton rag.
+            {[
+              '“We',
+              'do',
+              'not',
+              'lose',
+              'our',
+              'memories',
+              'all',
+              'at',
+              'once;',
+              'they',
+              'fade',
+              'like',
+              'pencil',
+              'markings',
+              'on',
+            ].map((word, idx) => (
+              <span key={idx} className="quote-word inline-block mr-[0.27em] will-change-transform">
+                {word}
+              </span>
+            ))}
+            <span className="italic font-normal text-[#4F66E8] dark:text-[#FFB93F] underline decoration-[#FF684D]/40 underline-offset-8">
+              {['sun-bleached', 'cotton', 'rag.'].map((word, idx) => (
+                <span
+                  key={`accent-${idx}`}
+                  className="quote-word inline-block mr-[0.25em] last:mr-0 will-change-transform"
+                >
+                  {word}
+                </span>
+              ))}
             </span>
-            &rdquo;
+            <span className="quote-word inline-block will-change-transform">&rdquo;</span>
           </blockquote>
 
           {/* Asymmetrical Editorial Composition: Prose + Archival Photograph Plate */}
@@ -175,7 +236,7 @@ export function ManifestoSection() {
             {/* Left Prose Column */}
             <div
               ref={proseRef}
-              className="lg:col-span-7 space-y-6 text-base sm:text-lg text-[#484C69] dark:text-[#A4AAC7] leading-relaxed font-light will-change-transform"
+              className="lg:col-span-7 space-y-6 text-base sm:text-lg text-[#484C69] dark:text-[#C8BCAA] leading-relaxed font-light will-change-transform"
             >
               <p className="font-serif text-xl sm:text-2xl text-[#191A2B] dark:text-[#F7F3EC] leading-relaxed first-letter:float-left first-letter:text-6xl first-letter:font-serif first-letter:pr-3 first-letter:text-[#FF684D] first-letter:leading-none">
                 In an era dominated by disappearing stories, ephemeral feeds, and algorithmic
@@ -192,33 +253,43 @@ export function ManifestoSection() {
 
             {/* Right Layered Photographic Plate */}
             <div ref={photoPlateRef} className="lg:col-span-5 will-change-transform">
-              <div className="relative mx-auto max-w-sm rounded-2xl bg-white dark:bg-[#1E2135] p-4 sm:p-5 shadow-[0_16px_40px_rgba(25,26,43,0.08)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-[#191A2B]/10 dark:border-white/10">
-                <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-black/10">
-                  <Image
-                    src="/images/photography/photo_hands_letter.webp"
-                    alt="Hands writing letters with fountain pen on cotton rag paper"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 400px"
-                    className="object-cover"
-                  />
+              <NeumorphicCard
+                tilt
+                spotlight
+                data-cursor="PLATE"
+                className="mx-auto max-w-sm rounded-2xl p-4 sm:p-5"
+              >
+                <div className="neu-well p-1.5 rounded-xl">
+                  <div className="manifesto-photo-window relative aspect-[4/3] rounded-lg overflow-hidden bg-black/10">
+                    <Image
+                      src="/images/photography/photo_hands_letter.webp"
+                      alt="Hands writing letters with fountain pen on cotton rag paper"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 400px"
+                      className="object-cover"
+                      style={{ filter: 'sepia(0.18) saturate(0.88) contrast(1.04)' }}
+                    />
+                  </div>
                 </div>
-                <div className="mt-4 flex items-center justify-between font-mono text-[11px] text-[#767C9D] dark:text-[#A4AAC7] uppercase tracking-wider">
+                <div className="mt-4 px-1 flex items-center justify-between font-mono text-[11px] text-[#8B6914] dark:text-[#C8BCAA] uppercase tracking-wider">
                   <span>PLATE 02 · ARCHIVAL MONOGRAPH</span>
-                  <span className="text-[#FF684D]">OCTOBER 18</span>
+                  <span className="text-[#FF684D] font-semibold">OCTOBER 18</span>
                 </div>
-              </div>
+              </NeumorphicCard>
             </div>
           </div>
 
           {/* Editorial Triptych: Three Core Tenets (Non-SaaS Layout) */}
           <div
             ref={triptychRef}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12 border-t border-[#191A2B]/10 dark:border-white/10"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 pt-12 border-t border-[#191A2B]/10 dark:border-amber-200/10"
           >
             {/* Tenet 01 */}
-            <div className="space-y-3">
+            <NeumorphicCard className="rounded-2xl p-6 sm:p-7 space-y-4">
               <div className="flex items-center gap-3 text-[#FF684D]">
-                <FeatherIcon size={20} />
+                <span className="neu-well w-9 h-9 rounded-xl flex items-center justify-center shrink-0">
+                  <FeatherIcon size={18} />
+                </span>
                 <span className="font-mono text-xs uppercase tracking-widest font-bold">
                   01 · INSCRIPTION
                 </span>
@@ -226,16 +297,18 @@ export function ManifestoSection() {
               <h3 className="font-serif text-2xl text-[#191A2B] dark:text-[#F7F3EC]">
                 Deliberate Thought
               </h3>
-              <p className="font-sans text-sm text-[#484C69] dark:text-[#A4AAC7] leading-relaxed font-light">
+              <p className="font-sans text-sm text-[#484C69] dark:text-[#C8BCAA] leading-relaxed font-light">
                 Designed like handmade stationery. No public counters, no social validation, and
                 zero broadcast feeds. Only pure written reflection.
               </p>
-            </div>
+            </NeumorphicCard>
 
             {/* Tenet 02 */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-3 text-[#4F66E8] dark:text-[#39BFAE]">
-                <LockIcon size={20} />
+            <NeumorphicCard className="rounded-2xl p-6 sm:p-7 space-y-4">
+              <div className="flex items-center gap-3 text-[#4F66E8] dark:text-[#FFB93F]">
+                <span className="neu-well w-9 h-9 rounded-xl flex items-center justify-center shrink-0">
+                  <LockIcon size={18} />
+                </span>
                 <span className="font-mono text-xs uppercase tracking-widest font-bold">
                   02 · TEMPORAL SEAL
                 </span>
@@ -243,16 +316,18 @@ export function ManifestoSection() {
               <h3 className="font-serif text-2xl text-[#191A2B] dark:text-[#F7F3EC]">
                 Letters Across Epochs
               </h3>
-              <p className="font-sans text-sm text-[#484C69] dark:text-[#A4AAC7] leading-relaxed font-light">
+              <p className="font-sans text-sm text-[#484C69] dark:text-[#C8BCAA] leading-relaxed font-light">
                 Capsules locked under server-enforced secrecy until your chosen future year. Sealed
                 against premature curiosity until the date arrives.
               </p>
-            </div>
+            </NeumorphicCard>
 
             {/* Tenet 03 */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-3 text-[#FFB93F]">
-                <CompassIcon size={20} />
+            <NeumorphicCard className="rounded-2xl p-6 sm:p-7 space-y-4">
+              <div className="flex items-center gap-3 text-[#C47A0D] dark:text-[#FFB93F]">
+                <span className="neu-well w-9 h-9 rounded-xl flex items-center justify-center shrink-0">
+                  <CompassIcon size={18} />
+                </span>
                 <span className="font-mono text-xs uppercase tracking-widest font-bold">
                   03 · CONTINUITY
                 </span>
@@ -260,11 +335,11 @@ export function ManifestoSection() {
               <h3 className="font-serif text-2xl text-[#191A2B] dark:text-[#F7F3EC]">
                 A Living Heritage
               </h3>
-              <p className="font-sans text-sm text-[#484C69] dark:text-[#A4AAC7] leading-relaxed font-light">
+              <p className="font-sans text-sm text-[#484C69] dark:text-[#C8BCAA] leading-relaxed font-light">
                 A unified river of time where past memories and unlocked capsules weave into an
                 enduring personal chronicle of who you were and who you became.
               </p>
-            </div>
+            </NeumorphicCard>
           </div>
         </div>
       </Container>

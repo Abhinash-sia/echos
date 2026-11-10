@@ -23,6 +23,7 @@ uniform float uTime;
 uniform vec2 uPointer;
 uniform float uReducedMotion;
 uniform int uIsDark;
+uniform int uTransparentBg;
 
 varying vec2 vUv;
 
@@ -92,6 +93,7 @@ void main() {
   
   // Evaluate sphere intersection
   float dist = sphereIntersect(ro, rd, sphereCenter, sphereRadius);
+  float alpha = uTransparentBg == 1 ? clamp(halo * 1.15, 0.0, 0.85) : 1.0;
   
   if (dist > 0.0) {
     vec3 hitPos = ro + rd * dist;
@@ -123,6 +125,7 @@ void main() {
     sphereColor += spec * 0.9;
     
     color = sphereColor;
+    alpha = 1.0;
   }
   
   // Orbiting celestial particles (stardust memories)
@@ -146,24 +149,35 @@ void main() {
       float pIntensity = pow((dot(pDir, rd) - 0.998) / 0.002, 2.0);
       vec3 pColor = mix(colOchre, colIvory, sin(fi) * 0.5 + 0.5);
       color += pColor * pIntensity * 1.2;
+      alpha = max(alpha, clamp(pIntensity, 0.0, 1.0));
     }
   }
   
-  gl_FragColor = vec4(color, 1.0);
+  gl_FragColor = vec4(color, alpha);
 }
 `;
+
+export interface MemoryOrbSceneOptions {
+  transparentBackground?: boolean;
+}
 
 export class MemoryOrbScene implements SceneRenderer {
   private gl: WebGLRenderingContext | WebGL2RenderingContext | null = null;
   private program: WebGLProgram | null = null;
   private positionBuffer: WebGLBuffer | null = null;
   private reducedMotion = false;
+  private transparentBackground: boolean;
 
   private uResolutionLocation: WebGLUniformLocation | null = null;
   private uTimeLocation: WebGLUniformLocation | null = null;
   private uPointerLocation: WebGLUniformLocation | null = null;
   private uReducedMotionLocation: WebGLUniformLocation | null = null;
   private uIsDarkLocation: WebGLUniformLocation | null = null;
+  private uTransparentBgLocation: WebGLUniformLocation | null = null;
+
+  constructor(options: MemoryOrbSceneOptions = {}) {
+    this.transparentBackground = Boolean(options.transparentBackground);
+  }
 
   init(gl: WebGLRenderingContext | WebGL2RenderingContext, _canvas: HTMLCanvasElement): void {
     void _canvas;
@@ -220,6 +234,12 @@ export class MemoryOrbScene implements SceneRenderer {
     this.uPointerLocation = gl.getUniformLocation(program, 'uPointer');
     this.uReducedMotionLocation = gl.getUniformLocation(program, 'uReducedMotion');
     this.uIsDarkLocation = gl.getUniformLocation(program, 'uIsDark');
+    this.uTransparentBgLocation = gl.getUniformLocation(program, 'uTransparentBg');
+
+    if (this.transparentBackground) {
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    }
   }
 
   resize(width: number, height: number, _dpr: number): void {
@@ -231,6 +251,11 @@ export class MemoryOrbScene implements SceneRenderer {
   render(time: number, pointer: ScenePointer): void {
     const gl = this.gl;
     if (!gl || !this.program) return;
+
+    if (this.transparentBackground) {
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+    }
 
     gl.useProgram(this.program);
 
@@ -256,6 +281,9 @@ export class MemoryOrbScene implements SceneRenderer {
     if (this.uIsDarkLocation) {
       const isDark = document.documentElement.classList.contains('dark') ? 1 : 0;
       gl.uniform1i(this.uIsDarkLocation, isDark);
+    }
+    if (this.uTransparentBgLocation) {
+      gl.uniform1i(this.uTransparentBgLocation, this.transparentBackground ? 1 : 0);
     }
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
